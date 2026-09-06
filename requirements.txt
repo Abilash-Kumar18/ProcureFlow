@@ -1,0 +1,13 @@
+# ProcureFlow (SIH 2026 Problem Statement 26032)
+# Runtime & Environment Requirements
+
+# Node.js Ecosystem:
+# Node.js >= 20.0.0
+# npm >= 10.0.0
+
+# Python Utility Requirements (for data processing, simulation, and export scripts):
+requests>=2.31.0
+pandas>=2.2.0
+openpyxl>=3.1.2
+pydantic>=2.6.0
+python-dotenv>=1.0.1
