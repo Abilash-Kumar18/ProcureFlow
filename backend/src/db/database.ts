@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -12,11 +12,11 @@ if (!fs.existsSync(dbDir)) {
 }
 
 const dbPath = path.resolve(dbDir, 'procureflow.db');
-export const db = new Database(dbPath);
+export const db = new DatabaseSync(dbPath);
 
 // Enable WAL mode and foreign keys for high performance and integrity
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+db.exec('PRAGMA journal_mode = WAL;');
+db.exec('PRAGMA foreign_keys = ON;');
 
 export function initDatabase() {
   const schemaPath = path.resolve(__dirname, 'schema.sql');
@@ -27,6 +27,14 @@ export function initDatabase() {
 
 // Transaction wrapper
 export function runInTransaction<T>(fn: () => T): T {
-  const execute = db.transaction(fn);
-  return execute();
+  db.exec('BEGIN');
+  try {
+    const result = fn();
+    db.exec('COMMIT');
+    return result;
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
 }
+

@@ -201,7 +201,7 @@ export const App: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.82rem', color: 'var(--slate-500)' }}>
-            <span>Thanjavur Agriculture Zone • Kharif KMS 2026</span>
+            <span>{t.zoneTag}</span>
           </div>
         </div>
       </div>
@@ -240,13 +240,13 @@ export const App: React.FC = () => {
       <footer className="no-print" style={{ background: '#090d16', color: 'var(--slate-400)', padding: '28px 0', borderTop: '1px solid #1e293b', marginTop: 'auto' }}>
         <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px', fontSize: '0.82rem' }}>
           <div>
-            <strong style={{ color: 'white' }}>ProcureFlow</strong> • Smart Procurement Centre Queue & Status Platform
+            <strong style={{ color: 'white' }}>{t.appTitle}</strong> • {t.appSubtitle}
             <span style={{ display: 'block', color: 'var(--slate-500)', marginTop: '3px' }}>
-              Built for Smart India Hackathon 2026 • Ministry of Consumer Affairs, Food & Public Distribution
+              {t.footerSubtext}
             </span>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <span style={{ color: '#34d399', fontWeight: 600 }}>Zero Gate Queues • 100% Transparent DBT Payments</span>
+            <span style={{ color: '#34d399', fontWeight: 600 }}>{t.footerTagline}</span>
           </div>
         </div>
       </footer>

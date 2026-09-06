@@ -318,18 +318,18 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <span className="badge badge-amber">OPERATIONS CONSOLE</span>
+              <span className="badge badge-amber">{t.operator.consoleBadge}</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#064e3b', padding: '2px 8px', borderRadius: '6px', fontSize: '0.72rem', color: '#6ee7b7', fontWeight: 700 }}>
                 <Activity size={13} />
-                <span>PPC-01 • LIVE</span>
+                <span>{t.operator.liveTag}</span>
               </div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--slate-400)' }}>Operator: <strong style={{ color: 'white' }}>{currentUser.name}</strong></span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--slate-400)' }}>{t.operator.operatorLabel} <strong style={{ color: 'white' }}>{currentUser.name}</strong></span>
             </div>
             <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white', letterSpacing: '-0.02em' }}>
               {t.operator.consoleTitle}
             </h2>
             <p style={{ color: 'var(--slate-400)', fontSize: '0.85rem', marginTop: '2px' }}>
-              Mandated Commodity: <strong>Paddy (Grade A)</strong> • MSP Rate: ₹2,320/Quintal • Kharif KMS 2026
+              {t.operator.mandatedInfo}
             </p>
           </div>
 
@@ -340,7 +340,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
               style={{ background: showPaymentTab ? 'var(--slate-800)' : '#1e293b', color: 'white', borderColor: '#334155' }}
             >
               <DollarSign size={16} color="#10b981" />
-              <span>DBT Reconcile ({payments.filter(p => p.status === 'PROCESSING').length} Pending)</span>
+              <span>{t.operator.dbtReconcileBtn} ({payments.filter(p => p.status === 'PROCESSING').length} {t.operator.pending})</span>
             </button>
             <button onClick={() => setShowWalkinModal(true)} className="btn btn-primary" style={{ padding: '10px 20px' }}>
               <UserPlus size={16} />
@@ -353,39 +353,39 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
         {centreDay && (
           <div style={{ marginTop: '24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '14px' }}>
             <div style={{ background: '#131b2e', padding: '16px', borderRadius: '16px', border: '1px solid #1e293b' }}>
-              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>Daily Capacity</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>{t.operator.telemetry.dailyCapacity}</span>
               <div className="mono" style={{ fontSize: '1.6rem', fontWeight: 800, color: 'white', marginTop: '2px' }}>{centreDay.planned_capacity_qty} Qtl</div>
               <div style={{ height: '5px', background: '#1e293b', borderRadius: '3px', marginTop: '8px', overflow: 'hidden' }}>
                 <div style={{ height: '100%', width: `${Math.round((centreDay.booked_qty / centreDay.planned_capacity_qty) * 100)}%`, background: '#10b981' }} />
               </div>
               <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', marginTop: '4px', display: 'block' }}>
-                {centreDay.booked_qty} Qtl Allocated ({Math.round((centreDay.booked_qty / centreDay.planned_capacity_qty) * 100)}%)
+                {centreDay.booked_qty} Qtl {t.operator.telemetry.allocated} ({Math.round((centreDay.booked_qty / centreDay.planned_capacity_qty) * 100)}%)
               </span>
             </div>
 
             <div style={{ background: '#131b2e', padding: '16px', borderRadius: '16px', border: '1px solid #1e293b' }}>
-              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>Arrivals at Gate</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>{t.operator.telemetry.arrivalsAtGate}</span>
               <div className="mono" style={{ fontSize: '1.6rem', fontWeight: 800, color: '#34d399', marginTop: '2px' }}>{centreDay.arrived_farmer_count}</div>
               <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', marginTop: '4px', display: 'block' }}>
-                Expected Total Today: {centreDay.booked_farmer_count}
+                {t.operator.telemetry.expectedTotalToday} {centreDay.booked_farmer_count}
               </span>
             </div>
 
             <div style={{ background: '#131b2e', padding: '16px', borderRadius: '16px', border: '1px solid #1e293b' }}>
-              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>Completed Weighings</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>{t.operator.telemetry.completedWeighings}</span>
               <div className="mono" style={{ fontSize: '1.6rem', fontWeight: 800, color: '#60a5fa', marginTop: '2px' }}>{centreDay.served_farmer_count}</div>
               <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', marginTop: '4px', display: 'block' }}>
-                Digital Receipts Dispatched
+                {t.operator.telemetry.receiptsDispatched}
               </span>
             </div>
 
             <div style={{ background: '#131b2e', padding: '16px', borderRadius: '16px', border: '1px solid #1e293b' }}>
-              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>Active Waiting Queue</span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>{t.operator.telemetry.activeWaitingQueue}</span>
               <div className="mono" style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fbbf24', marginTop: '2px' }}>
                 {queueList.filter((q: any) => q.state === 'WAITING' || q.state === 'CHECKED_IN').length}
               </div>
               <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', marginTop: '4px', display: 'block' }}>
-                Throughput: ~12 mins / load
+                {t.operator.telemetry.throughput}
               </span>
             </div>
           </div>
@@ -399,14 +399,14 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
             <div>
               <h3 style={{ fontSize: '1.25rem', color: '#166534', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <DollarSign size={22} />
-                <span>Direct Benefit Transfer (PFMS DBT) Reconciliation Desk</span>
+                <span>{t.operator.dbtDesk.title}</span>
               </h3>
               <p style={{ fontSize: '0.8rem', color: '#15803d' }}>
-                Operator approval dispatches SMS payout alerts to verified farmer bank accounts.
+                {t.operator.dbtDesk.subtitle}
               </p>
             </div>
             <button onClick={() => setShowPaymentTab(false)} className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '0.8rem' }}>
-              Close Desk
+              {t.operator.dbtDesk.close}
             </button>
           </div>
 
@@ -414,12 +414,12 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
             <table className="modern-table" style={{ background: 'white', borderRadius: '14px', overflow: 'hidden' }}>
               <thead>
                 <tr>
-                  <th>Receipt Ref</th>
-                  <th>Farmer Details</th>
-                  <th>Payable (₹)</th>
-                  <th>Bank DBT Masked</th>
-                  <th>Status</th>
-                  <th style={{ textAlign: 'right' }}>Reconciliation Action</th>
+                  <th>{t.operator.dbtDesk.receiptRef}</th>
+                  <th>{t.operator.dbtDesk.farmerDetails}</th>
+                  <th>{t.operator.dbtDesk.payable}</th>
+                  <th>{t.operator.dbtDesk.bankDbtMasked}</th>
+                  <th>{t.operator.dbtDesk.status}</th>
+                  <th style={{ textAlign: 'right' }}>{t.operator.dbtDesk.action}</th>
                 </tr>
               </thead>
               <tbody>
@@ -449,7 +449,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                           className="btn btn-primary"
                           style={{ padding: '6px 14px', fontSize: '0.8rem' }}
                         >
-                          Confirm Bank Credit ✅
+                          {t.operator.dbtDesk.confirmCredit}
                         </button>
                       )}
                       {p.status === 'INITIATED' && (
@@ -458,12 +458,12 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                           className="btn btn-secondary"
                           style={{ padding: '6px 14px', fontSize: '0.8rem' }}
                         >
-                          Send to PFMS 🏦
+                          {t.operator.dbtDesk.sendPfms}
                         </button>
                       )}
                       {p.status === 'PAID' && (
                         <span style={{ fontSize: '0.8rem', color: '#15803d', fontWeight: 700 }}>
-                          Credited to Farmer 💰
+                          {t.operator.dbtDesk.credited}
                         </span>
                       )}
                     </td>
@@ -481,7 +481,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
           {/* Weighing Bays Grid */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--slate-800)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              Active Counter Bay:
+              {t.operator.baySelector.label}
             </span>
             <div style={{ display: 'flex', gap: '10px' }}>
               {counters.map((c: any) => {
@@ -506,7 +506,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                       <strong style={{ fontSize: '0.88rem', color: isSelected ? '#064e3b' : 'var(--slate-800)' }}>{c.counter_code}</strong>
                     </div>
                     <span className="mono" style={{ display: 'block', fontSize: '0.75rem', color: isSelected ? '#047857' : 'var(--slate-400)', marginTop: '2px', fontWeight: 700 }}>
-                      {c.current_token_no ? `Serving: ${c.current_token_no}` : 'Bay Free'}
+                      {c.current_token_no ? `${t.operator.baySelector.serving} ${c.current_token_no}` : t.operator.baySelector.bayFree}
                     </span>
                   </button>
                 );
@@ -530,9 +530,9 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
       <div className="modern-card" style={{ padding: '24px', background: 'white' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
           <div>
-            <h3 style={{ fontSize: '1.3rem', color: 'var(--slate-900)' }}>Live Centre Queue Flow</h3>
+            <h3 style={{ fontSize: '1.3rem', color: 'var(--slate-900)' }}>{t.operator.queueTable.title}</h3>
             <p style={{ fontSize: '0.82rem', color: 'var(--slate-500)' }}>
-              Real-time FIFO queue with priority allocation for elderly & smallholder farmers
+              {t.operator.queueTable.subtitle}
             </p>
           </div>
 
@@ -542,7 +542,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
               <Search size={16} color="var(--slate-400)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               <input
                 type="text"
-                placeholder="Search token, farmer or village..."
+                placeholder={t.operator.queueTable.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
@@ -558,23 +558,28 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
 
             {/* Filter Pills */}
             <div style={{ display: 'flex', background: 'var(--slate-100)', padding: '3px', borderRadius: '10px', gap: '2px' }}>
-              {['ALL', 'ACTIVE', 'WAITING', 'COMPLETED'].map((filter) => (
+              {[
+                { key: 'ALL', label: t.operator.queueTable.filterAll },
+                { key: 'ACTIVE', label: t.operator.queueTable.filterActive },
+                { key: 'WAITING', label: t.operator.queueTable.filterWaiting },
+                { key: 'COMPLETED', label: t.operator.queueTable.filterCompleted }
+              ].map(({ key, label }) => (
                 <button
-                  key={filter}
-                  onClick={() => setFilterState(filter)}
+                  key={key}
+                  onClick={() => setFilterState(key)}
                   style={{
                     padding: '6px 12px',
                     borderRadius: '8px',
                     border: 'none',
-                    background: filterState === filter ? 'white' : 'transparent',
-                    color: filterState === filter ? 'var(--slate-900)' : 'var(--slate-500)',
+                    background: filterState === key ? 'white' : 'transparent',
+                    color: filterState === key ? 'var(--slate-900)' : 'var(--slate-500)',
                     fontWeight: 700,
                     fontSize: '0.75rem',
                     cursor: 'pointer',
-                    boxShadow: filterState === filter ? 'var(--shadow-subtle)' : 'none'
+                    boxShadow: filterState === key ? 'var(--shadow-subtle)' : 'none'
                   }}
                 >
-                  {filter}
+                  {label}
                 </button>
               ))}
             </div>
@@ -651,7 +656,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                             style={{ padding: '7px 14px', fontSize: '0.8rem' }}
                           >
                             <Scale size={15} />
-                            <span>Start Service</span>
+                            <span>{t.operator.queueTable.startService}</span>
                           </button>
                         )}
 
@@ -662,7 +667,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                             style={{ padding: '7px 16px', fontSize: '0.8rem', background: '#059669' }}
                           >
                             <FileCheck size={15} />
-                            <span>Weighbridge & Quality</span>
+                            <span>{t.operator.queueTable.weighbridgeQuality}</span>
                           </button>
                         )}
 
@@ -674,7 +679,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                               style={{ padding: '6px 12px', fontSize: '0.78rem' }}
                               title="Defer token temporarily"
                             >
-                              Defer
+                              {t.operator.queueTable.defer}
                             </button>
                             <button
                               onClick={() => handleSkip(entry.id)}
@@ -682,14 +687,14 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                               style={{ padding: '6px 12px', fontSize: '0.78rem', color: 'var(--red-600)' }}
                               title="Mark No-Show"
                             >
-                              No-Show
+                              {t.operator.queueTable.noShow}
                             </button>
                           </>
                         )}
 
                         {entry.state === 'COMPLETED' && (
                           <span style={{ fontSize: '0.8rem', color: 'var(--emerald-700)', fontWeight: 700 }}>
-                            Receipt Issued ✅
+                            {t.operator.queueTable.receiptIssued}
                           </span>
                         )}
                       </div>
@@ -709,10 +714,10 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--slate-200)', paddingBottom: '14px' }}>
               <div>
                 <h3 style={{ fontSize: '1.4rem', color: 'var(--slate-900)' }}>
-                  Weighbridge & Quality Station — {activeWeighingEntry.token_no}
+                  {t.operator.weighingModal.title} {activeWeighingEntry.token_no}
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--slate-500)' }}>
-                  Farmer: <strong>{activeWeighingEntry.farmer_name}</strong> • Declared: {activeWeighingEntry.expected_qty} Qtl Paddy
+                  {t.operator.weighingModal.farmer} <strong>{activeWeighingEntry.farmer_name}</strong> • {t.operator.weighingModal.declared} {activeWeighingEntry.expected_qty} {t.operator.weighingModal.paddy}
                 </p>
               </div>
               <button onClick={() => setActiveWeighingEntry(null)} style={{ background: 'none', border: 'none', fontSize: '1.8rem', cursor: 'pointer', color: 'var(--slate-400)' }}>&times;</button>
@@ -721,12 +726,12 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
             {/* Simulated Digital LED Weighbridge Terminal */}
             <div className="weighbridge-terminal" style={{ marginBottom: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#6ee7b7', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>
-                <span>METROLOGY CALIBRATED WEIGHBRIDGE SCALE #1</span>
-                <span>STATUS: STABLE</span>
+                <span>{t.operator.weighingModal.scaleTitle}</span>
+                <span>{t.operator.weighingModal.scaleStatus}</span>
               </div>
               <div className="scale-readout">
                 <span>{(grossWeight * 100).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
-                <span style={{ fontSize: '1.2rem', color: '#34d399' }}>KG GROSS</span>
+                <span style={{ fontSize: '1.2rem', color: '#34d399' }}>{t.operator.weighingModal.grossKg}</span>
               </div>
             </div>
 
@@ -734,7 +739,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>
-                  Gross Load Weight (Quintals):
+                  {t.operator.weighingModal.grossLabel}
                 </label>
                 <input
                   type="number"
@@ -747,7 +752,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>
-                  Tare Weight (Vehicle/Sacks) (Quintals):
+                  {t.operator.weighingModal.tareLabel}
                 </label>
                 <input
                   type="number"
@@ -760,7 +765,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>
-                  Moisture Content Analyzer (%):
+                  {t.operator.weighingModal.moistureLabel}
                 </label>
                 <input
                   type="number"
@@ -770,21 +775,21 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                   style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--slate-300)', fontSize: '1.05rem', fontWeight: 700 }}
                 />
                 <span style={{ fontSize: '0.72rem', color: moisture > 14.0 ? 'var(--red-600)' : '#059669', marginTop: '4px', display: 'block', fontWeight: 600 }}>
-                  {moisture > 14.0 ? `Excess moisture deduction (${(moisture - 14).toFixed(1)}%) applies` : 'Within acceptable moisture range (≤ 14.0%)'}
+                  {moisture > 14.0 ? `${t.operator.weighingModal.moistureExcess} (${(moisture - 14).toFixed(1)}%)` : t.operator.weighingModal.moistureOk}
                 </span>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>
-                  Official Grading:
+                  {t.operator.weighingModal.gradingLabel}
                 </label>
                 <select
                   value={qualityGrade}
                   onChange={(e) => setQualityGrade(e.target.value as any)}
                   style={{ width: '100%', padding: '11px 14px', borderRadius: '10px', border: '1px solid var(--slate-300)', fontSize: '0.95rem', fontWeight: 600 }}
                 >
-                  <option value="GRADE_A">Paddy Grade A (MSP ₹2,320 / Qtl)</option>
-                  <option value="COMMON">Common Paddy (MSP ₹2,300 / Qtl)</option>
+                  <option value="GRADE_A">{t.operator.weighingModal.gradeA}</option>
+                  <option value="COMMON">{t.operator.weighingModal.common}</option>
                 </select>
               </div>
             </div>
@@ -792,19 +797,19 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
             {/* Calculations Breakdown */}
             <div style={{ background: '#f8fafc', padding: '16px 20px', borderRadius: '16px', border: '1px solid var(--slate-200)', marginBottom: '24px', fontSize: '0.92rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <span>Net Quantity (Gross - Tare):</span>
-                <strong className="mono">{netQty.toFixed(2)} Qtl</strong>
+                <span>{t.operator.weighingModal.netQty}</span>
+                <strong className="mono">{netQty.toFixed(2)} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <span>Moisture Deduction:</span>
-                <span className="mono" style={{ color: 'var(--red-600)' }}>- {moistureDed.toFixed(2)} Qtl</span>
+                <span>{t.operator.weighingModal.moistureDed}</span>
+                <span className="mono" style={{ color: 'var(--red-600)' }}>- {moistureDed.toFixed(2)} {t.common.quintals}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', borderTop: '1px solid var(--slate-200)', paddingTop: '6px' }}>
-                <span>Final Payable Quantity:</span>
-                <strong className="mono" style={{ color: 'var(--emerald-700)', fontSize: '1.05rem' }}>{finalPayable.toFixed(2)} Qtl</strong>
+                <span>{t.operator.weighingModal.finalPayable}</span>
+                <strong className="mono" style={{ color: 'var(--emerald-700)', fontSize: '1.05rem' }}>{finalPayable.toFixed(2)} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid var(--slate-300)', paddingTop: '8px', fontSize: '1.25rem', color: 'var(--emerald-800)' }}>
-                <strong>Net Payable to Farmer:</strong>
+                <strong>{t.operator.weighingModal.netPayable}</strong>
                 <strong className="mono">₹{netPayableAmt.toLocaleString('en-IN')}</strong>
               </div>
             </div>
@@ -812,7 +817,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
             {/* Action Buttons */}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
               <button onClick={() => setActiveWeighingEntry(null)} className="btn btn-secondary">
-                Cancel
+                {t.common.cancel}
               </button>
               <button
                 onClick={handleSubmitProcurement}
@@ -820,7 +825,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                 className="btn btn-primary"
                 style={{ padding: '12px 28px', fontWeight: 700 }}
               >
-                {isSubmittingProcurement ? 'Generating Receipt...' : 'Approve & Issue Digital Receipt'}
+                {isSubmittingProcurement ? t.operator.weighingModal.generatingReceipt : t.operator.weighingModal.approveButton}
               </button>
             </div>
           </div>
@@ -832,16 +837,16 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '16px' }}>
           <div className="modern-card" style={{ background: 'white', maxWidth: '520px', width: '100%', padding: '28px', borderRadius: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', borderBottom: '1px solid var(--slate-200)', paddingBottom: '12px' }}>
-              <h3 style={{ fontSize: '1.3rem', color: 'var(--slate-900)' }}>Assisted Walk-in Farmer Entry</h3>
+              <h3 style={{ fontSize: '1.3rem', color: 'var(--slate-900)' }}>{t.operator.walkinModal.title}</h3>
               <button onClick={() => setShowWalkinModal(false)} style={{ background: 'none', border: 'none', fontSize: '1.8rem', cursor: 'pointer', color: 'var(--slate-400)' }}>&times;</button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>Farmer Full Name:</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>{t.operator.walkinModal.nameLabel}</label>
                 <input
                   type="text"
-                  placeholder="e.g. Karuppasamy"
+                  placeholder={t.operator.walkinModal.namePlaceholder}
                   value={walkinName}
                   onChange={(e) => setWalkinName(e.target.value)}
                   style={{ width: '100%', padding: '11px', borderRadius: '10px', border: '1px solid var(--slate-300)', fontSize: '0.95rem' }}
@@ -849,10 +854,10 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>Mobile Number:</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>{t.operator.walkinModal.mobileLabel}</label>
                 <input
                   type="tel"
-                  placeholder="10-digit mobile"
+                  placeholder={t.operator.walkinModal.mobilePlaceholder}
                   value={walkinMobile}
                   onChange={(e) => setWalkinMobile(e.target.value)}
                   style={{ width: '100%', padding: '11px', borderRadius: '10px', border: '1px solid var(--slate-300)', fontSize: '0.95rem' }}
@@ -860,7 +865,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>Village / Taluk:</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>{t.operator.walkinModal.villageLabel}</label>
                 <input
                   type="text"
                   value={walkinVillage}
@@ -870,7 +875,7 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>Brought Load (Quintals):</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, marginBottom: '6px' }}>{t.operator.walkinModal.qtyLabel}</label>
                 <input
                   type="number"
                   value={walkinQty}
@@ -882,10 +887,10 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
               <button onClick={() => setShowWalkinModal(false)} className="btn btn-secondary">
-                Cancel
+                {t.common.cancel}
               </button>
               <button onClick={handleSubmitWalkin} disabled={isSubmittingWalkin} className="btn btn-primary" style={{ padding: '10px 24px' }}>
-                {isSubmittingWalkin ? 'Generating Token...' : 'Register & Check In'}
+                {isSubmittingWalkin ? t.operator.walkinModal.generatingToken : t.operator.walkinModal.registerButton}
               </button>
             </div>
           </div>

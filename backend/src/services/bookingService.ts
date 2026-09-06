@@ -8,12 +8,12 @@ export class BookingService {
    * Search available centres with remaining capacity and alternative suggestions
    */
   public searchCentres(districtId: string, commodityId?: string, date?: string) {
-    const centres = db.prepare(`
+    const centres = (db.prepare(`
       SELECT c.*, d.name as district_name
       FROM centres c
       JOIN districts d ON c.district_id = d.id
       WHERE c.district_id = ? AND c.status != 'CLOSED'
-    `).all(districtId) as (Centre & { district_name: string })[];
+    `).all(districtId) as unknown) as (Centre & { district_name: string })[];
 
     const result = centres.map(centre => {
       // Get today or requested date's capacity
@@ -50,11 +50,11 @@ export class BookingService {
       throw new Error('Centre-day not found');
     }
 
-    const slotWindows = db.prepare(`
+    const slotWindows = (db.prepare(`
       SELECT * FROM slot_windows
       WHERE centre_day_id = ?
       ORDER BY start_time ASC
-    `).all(centreDayId) as SlotWindow[];
+    `).all(centreDayId) as unknown) as SlotWindow[];
 
     return {
       centre_day: centreDay,
@@ -212,7 +212,7 @@ export class BookingService {
         `Farmer ${farmer.name} booked ${params.expected_qty} Qtl. Token ${token_no} allocated.`
       );
 
-      const createdBooking = db.prepare(`SELECT * FROM bookings WHERE id = ?`).get(bookingId) as Booking;
+      const createdBooking = (db.prepare(`SELECT * FROM bookings WHERE id = ?`).get(bookingId) as unknown) as Booking;
 
       // Broadcast update to operator channel
       sseService.broadcast(`centre:${params.centre_day_id}`, 'booking_created', {

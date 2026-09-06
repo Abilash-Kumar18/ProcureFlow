@@ -149,7 +149,7 @@ export class ProcurementService {
         `🌾 ProcureFlow Receipt: ${receiptRef}. Net Weight: ${finalPayableQty} Qtl @ ₹${rate}/Qtl. Payable: ₹${netAmount.toLocaleString('en-IN')}. Direct Benefit Transfer initiated to ${booking.masked_payment_ref}.`
       );
 
-      const record = db.prepare(`SELECT * FROM procurement_records WHERE id = ?`).get(procurementId) as ProcurementRecord;
+      const record = (db.prepare(`SELECT * FROM procurement_records WHERE id = ?`).get(procurementId) as unknown) as ProcurementRecord;
 
       // Real-time broadcast
       sseService.broadcast(`centre:${booking.centre_day_id}`, 'procurement_completed', { record, receiptRef });

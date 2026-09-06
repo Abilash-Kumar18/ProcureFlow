@@ -35,13 +35,13 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{ fontSize: '1rem' }}>🇮🇳</span>
               <span style={{ color: '#e2e8f0', fontWeight: 600, letterSpacing: '0.01em' }}>
-                Department of Consumer Affairs (DoCA) • Ministry of Consumer Affairs, Food & Public Distribution
+                {t.govtHeader}
               </span>
             </div>
             <span style={{ color: 'rgba(255, 255, 255, 0.2)' }}>|</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#6ee7b7', fontWeight: 700 }}>
               <Award size={13} />
-              <span>SIH 2026 Problem Statement 26032</span>
+              <span>{t.sihBadge}</span>
             </div>
           </div>
 
@@ -50,7 +50,7 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(0, 0, 0, 0.3)', padding: '2px 10px', borderRadius: '9999px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
               <div className="live-dot" />
               <span style={{ color: isLiveConnected ? '#34d399' : '#fbbf24', fontWeight: 700, fontSize: '0.7rem' }}>
-                {isLiveConnected ? 'REAL-TIME SSE CONNECTED (12ms)' : 'FALLBACK SYNC'}
+                {isLiveConnected ? t.realtimeConnected : t.fallbackSync}
               </span>
             </div>
           </div>
@@ -191,7 +191,7 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             }}
           >
             <RefreshCw size={14} className={isResetting ? 'pulse-active' : ''} />
-            <span>{isResetting ? 'Resetting...' : 'Reset'}</span>
+            <span>{isResetting ? t.demoBar.resetting : t.demoBar.resetData}</span>
           </button>
         </div>
       </div>
