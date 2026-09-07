@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, LanguageCode, CentreMetrics } from '../../../../shared/src/types';
-import { translations } from '../../i18n/translations';
+import { translations, localizeCentreName, localizeStatus } from '../../i18n/translations';
 import {
   ShieldCheck, Download, AlertTriangle, Building, TrendingUp,
   Clock, Users, Activity, CheckCircle2, FileSpreadsheet, RefreshCw,
@@ -163,14 +163,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ currentUser, cur
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                   <div>
-                    <strong style={{ fontSize: '1rem', color: 'var(--slate-900)' }}>{c.centre_name}</strong>
+                    <strong style={{ fontSize: '1rem', color: 'var(--slate-900)' }}>{localizeCentreName(c.centre_name, currentLanguage)}</strong>
                     <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--slate-500)' }}>{t.admin.centreUnit}</span>
                   </div>
                   <span className={`badge ${
                     c.congestion_level === 'CRITICAL' ? 'badge-red' :
                     c.congestion_level === 'CONGESTED' ? 'badge-amber' : 'badge-emerald'
                   }`}>
-                    {c.congestion_level}
+                    {localizeStatus(c.congestion_level, currentLanguage)}
                   </span>
                 </div>
 
@@ -178,7 +178,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ currentUser, cur
                 <div style={{ margin: '14px 0 10px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: '6px' }}>
                     <span style={{ color: 'var(--slate-600)' }}>{t.admin.capacityBooked}</span>
-                    <strong className="mono">{capRatio}% ({c.booked_volume}/{c.planned_capacity} Qtl)</strong>
+                    <strong className="mono">{capRatio}% ({c.booked_volume}/{c.planned_capacity} {t.common.quintals})</strong>
                   </div>
                   <div style={{ height: '8px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{
@@ -227,24 +227,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ currentUser, cur
                 <th>{t.admin.auditTable.actor}</th>
                 <th>{t.admin.auditTable.centre}</th>
                 <th>{t.admin.auditTable.summary}</th>
-                <th>{t.admin.auditTable.timestamp}</th>
+                <th style={{ textAlign: 'right' }}>{t.admin.auditTable.timestamp}</th>
               </tr>
             </thead>
             <tbody>
               {auditLogs.map((log) => (
                 <tr key={log.id}>
                   <td>
-                    <span className="badge badge-slate" style={{ fontSize: '0.7rem' }}>
-                      {log.event_type}
+                    <span className="badge badge-slate" style={{ fontFamily: 'monospace' }}>
+                      {localizeStatus(log.event_type, currentLanguage)}
                     </span>
                   </td>
-                  <td style={{ fontWeight: 700, fontSize: '0.85rem' }}>{log.entity_type}</td>
+                  <td className="mono" style={{ fontSize: '0.8rem' }}>{log.entity_type}</td>
                   <td>
-                    <strong style={{ color: 'var(--slate-900)' }}>{log.actor_name}</strong>
-                    <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--slate-400)' }}>{log.actor_role}</span>
+                    <strong>{log.actor_name}</strong>
+                    <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--slate-500)' }}>{log.actor_role}</span>
                   </td>
                   <td style={{ fontSize: '0.82rem', color: 'var(--slate-600)' }}>
-                    {log.centre_name || t.admin.auditTable.districtCommand}
+                    {localizeCentreName(log.centre_name, currentLanguage) || t.admin.auditTable.districtCommand}
                   </td>
                   <td style={{ color: 'var(--slate-800)', fontSize: '0.85rem' }}>{log.summary}</td>
                   <td className="mono" style={{ fontSize: '0.75rem', color: 'var(--slate-500)', whiteSpace: 'nowrap' }}>

@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { User, LanguageCode, SlotWindow } from '../../../../shared/src/types';
-import { translations } from '../../i18n/translations';
+import {
+  translations,
+  localizeStatus,
+  localizeCentreName,
+  localizeCentreAddress,
+  localizeCommodity,
+  localizeVillage,
+  localizeBank,
+  localizeCounter,
+  localizeChannel,
+  localizeNotificationTitle,
+  localizeNotificationMessage
+} from '../../i18n/translations';
 import { playTokenCallChime } from '../../utils/audioAlert';
 import confetti from 'canvas-confetti';
 import {
@@ -213,7 +225,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               </div>
               <h2 style={{ fontSize: '1.6rem', color: 'var(--slate-900)' }}>{t.farmer.welcome} {currentUser.name}</h2>
               <p style={{ color: 'var(--slate-600)', fontSize: '0.85rem' }}>
-                📍 {(currentUser as any).village || 'Pillaiyarpatti South'} • 🏦 {(currentUser as any).masked_payment_ref || 'SBIN*****4821'} (State Bank of India)
+                📍 {localizeVillage((currentUser as any).village, currentLanguage) || localizeVillage('Pillaiyarpatti South', currentLanguage)} • 🏦 {(currentUser as any).masked_payment_ref || 'SBIN*****4821'} ({localizeBank((currentUser as any).bank_name || 'State Bank of India', currentLanguage)})
               </p>
             </div>
           </div>
@@ -221,7 +233,9 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{ background: '#ecfdf5', padding: '10px 16px', borderRadius: '14px', border: '1px solid #a7f3d0', textAlign: 'right' }}>
               <span style={{ fontSize: '0.72rem', color: '#047857', fontWeight: 700, textTransform: 'uppercase' }}>{t.farmer.kharifQuota}</span>
-              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#065f46' }}>80.0 / 100 Qtl</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#065f46' }}>
+                {currentUser.id === 'user-ramesh' ? '80.0 / 100 Qtl' : currentUser.id === 'u-f-1' ? '75.0 / 100 Qtl' : '60.0 / 80 Qtl'}
+              </div>
               <span style={{ fontSize: '0.7rem', color: '#059669' }}>{t.farmer.eligiblePaddy}</span>
             </div>
 
@@ -264,7 +278,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 </div>
               </div>
               <h3 style={{ fontSize: '1.35rem', margin: '4px 0', fontWeight: 800 }}>
-                {t.farmer.urgentAlert.calledTo} {activeBooking.assigned_counter_code || 'Counter 1 (Weighbridge Bay)'}!
+                {t.farmer.urgentAlert.calledTo} {localizeCounter(activeBooking.assigned_counter_code, currentLanguage) || localizeCounter('Counter 1 (Weighbridge Bay)', currentLanguage)}!
               </h3>
               <p style={{ fontSize: '0.85rem', opacity: 0.95 }}>
                 {t.farmer.urgentAlert.instructions}
@@ -295,11 +309,11 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 <span style={{ fontSize: '0.75rem', color: '#a7f3d0' }}>{t.farmer.docaNetwork}</span>
               </div>
               <h3 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'white' }}>
-                {activeBooking.centre_name}
+                {localizeCentreName(activeBooking.centre_name, currentLanguage)}
               </h3>
               <p style={{ color: '#a7f3d0', fontSize: '0.9rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <MapPin size={15} />
-                <span>{activeBooking.centre_address}</span>
+                <span>{localizeCentreAddress(activeBooking.centre_address, currentLanguage)}</span>
               </p>
             </div>
 
@@ -339,14 +353,16 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
 
             <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>{t.farmer.cropExpectedVolume}</span>
-              <div style={{ fontSize: '1.1rem', fontWeight: 800, marginTop: '2px' }}>{activeBooking.commodity_name} • {activeBooking.expected_qty} Qtl</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, marginTop: '2px' }}>
+                {localizeCommodity(activeBooking.commodity_name, currentLanguage)} • {activeBooking.expected_qty} {t.common.quintals}
+              </div>
             </div>
 
             <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>{t.farmer.currentStatus}</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                 <span className={`badge ${activeBooking.queue_state === 'CALLED' ? 'badge-amber' : 'badge-emerald'}`}>
-                  {activeBooking.queue_state}
+                  {localizeStatus(activeBooking.queue_state, currentLanguage)}
                 </span>
               </div>
             </div>
@@ -507,11 +523,11 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                       b.status === 'COMPLETED' ? 'badge-emerald' :
                       b.status === 'CONFIRMED' ? 'badge-amber' : 'badge-slate'
                     }`}>
-                      {b.queue_state || b.status}
+                      {localizeStatus(b.queue_state || b.status, currentLanguage)}
                     </span>
                   </div>
                   <p style={{ fontSize: '0.85rem', color: 'var(--slate-600)', marginTop: '3px' }}>
-                    {b.centre_name} • {b.service_date}
+                    {localizeCentreName(b.centre_name, currentLanguage)} • {b.service_date}
                   </p>
                   {b.receipt_ref && (
                     <span style={{ fontSize: '0.78rem', color: 'var(--emerald-700)', fontWeight: 700 }}>
@@ -546,10 +562,12 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {notifications.map((n) => (
               <div key={n.id} style={{ background: 'var(--slate-50)', borderRadius: '14px', padding: '14px', borderLeft: '4px solid var(--emerald-500)', border: '1px solid var(--slate-200)', borderLeftWidth: '4px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                  <strong style={{ fontSize: '0.88rem', color: 'var(--slate-900)' }}>{n.title}</strong>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--slate-400)' }}>{n.channel}</span>
+                  <strong style={{ fontSize: '0.88rem', color: 'var(--slate-900)' }}>{localizeNotificationTitle(n.title, currentLanguage)}</strong>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--slate-400)' }}>{localizeChannel(n.channel, currentLanguage)}</span>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--slate-600)', lineHeight: 1.45 }}>{n.message}</p>
+                <p style={{ fontSize: '0.82rem', color: 'var(--slate-600)', lineHeight: 1.45 }}>
+                  {localizeNotificationMessage(n.message, currentLanguage)}
+                </p>
                 <span style={{ fontSize: '0.68rem', color: 'var(--slate-400)', marginTop: '4px', display: 'block' }}>
                   {t.farmer.deliveredTo} {(currentUser as any).mobile || '9876543210'}
                 </span>
@@ -624,12 +642,12 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '0.95rem', color: 'var(--slate-900)' }}>{c.name}</strong>
+                      <strong style={{ fontSize: '0.95rem', color: 'var(--slate-900)' }}>{localizeCentreName(c.name, currentLanguage)}</strong>
                       <span className={`badge ${c.is_congested ? 'badge-amber' : 'badge-emerald'}`}>
                         {c.is_congested ? t.common.heavyTraffic : t.common.optimal}
                       </span>
                     </div>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--slate-500)', marginTop: '4px' }}>{c.address}</p>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--slate-500)', marginTop: '4px' }}>{localizeCentreAddress(c.address, currentLanguage)}</p>
                   </div>
                 ))}
               </div>
@@ -745,8 +763,8 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {/* Farmer & Centre Meta Details */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', fontSize: '0.85rem', marginBottom: '20px' }}>
               <div><strong>{t.farmer.receiptModal.farmerName}</strong> {selectedReceipt.farmer_name}</div>
-              <div><strong>{t.farmer.receiptModal.centreName}</strong> {selectedReceipt.centre_name}</div>
-              <div><strong>{t.farmer.receiptModal.commodityVariety}</strong> {selectedReceipt.commodity_name}</div>
+              <div><strong>{t.farmer.receiptModal.centreName}</strong> {localizeCentreName(selectedReceipt.centre_name, currentLanguage)}</div>
+              <div><strong>{t.farmer.receiptModal.commodityVariety}</strong> {localizeCommodity(selectedReceipt.commodity_name, currentLanguage)}</div>
               <div><strong>{t.farmer.receiptModal.timestamp}</strong> {selectedReceipt.recorded_at}</div>
               <div><strong>{t.farmer.receiptModal.aadhaar}</strong> {selectedReceipt.masked_aadhaar}</div>
               <div><strong>{t.farmer.receiptModal.bankDbt}</strong> {selectedReceipt.masked_payment_ref}</div>
@@ -791,7 +809,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               <div>
                 <span style={{ fontSize: '0.75rem', color: '#166534', fontWeight: 800 }}>{t.farmer.receiptModal.dbtStatusTitle}</span>
                 <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#15803d', marginTop: '2px' }}>
-                  {selectedReceipt.payment_status || 'INITIATED'}
+                  {localizeStatus(selectedReceipt.payment_status, currentLanguage) || 'INITIATED'}
                 </div>
                 <span className="mono" style={{ fontSize: '0.72rem', color: '#166534' }}>Ref: {selectedReceipt.payment_ref_masked || 'DBT-PFMS-TN-98124'}</span>
               </div>

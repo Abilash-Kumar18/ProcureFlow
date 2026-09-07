@@ -217,6 +217,12 @@ export function seedData() {
         df.counter ? 'cnt-c1-1' : null
       );
 
+      // Add farmer eligibility
+      db.prepare(`
+        INSERT INTO farmer_eligibilities (id, farmer_id, season_id, commodity_id, allocated_quota_quintals, utilized_quota_quintals, status)
+        VALUES (?, ?, ?, ?, ?, ?, 'ELIGIBLE')
+      `).run(`el-${df.id}`, profId, seasonKharif, commPaddyA, 100.0, df.state === 'COMPLETED' ? df.qty : 0.0);
+
       // Add completed procurement records for Murugan and Lakshmi
       if (df.state === 'COMPLETED') {
         const gross = df.qty + 1.2;
@@ -258,6 +264,22 @@ export function seedData() {
           netAmt,
           payStatus,
           payStatus === 'PAID' ? '2026-09-07 14:30:00' : null
+        );
+
+        // Notifications for completed farmers (Murugan, Lakshmi)
+        db.prepare(`
+          INSERT INTO notification_jobs (id, farmer_id, recipient_mobile, channel, title, message, language, status, sent_at) VALUES
+          (?, ?, ?, 'SMS', 'Booking Confirmed', ?, 'en', 'DELIVERED', DATETIME('now', '-4 hours')),
+          (?, ?, ?, 'IN_APP', 'Procurement Completed', ?, 'en', 'DELIVERED', DATETIME('now', '-2 hours')),
+          (?, ?, ?, 'SMS', ?, ?, 'en', 'DELIVERED', DATETIME('now', '-1 hour'))
+        `).run(
+          `notif-${df.id}-1`, profId, df.mobile, `ProcureFlow: Your slot for ${df.qty} Quintals Paddy at Pillaiyarpatti PPC is CONFIRMED. Token: ${df.token}, Window: 09:00-11:00.`,
+          `notif-${df.id}-2`, profId, df.mobile, `Weighbridge measurement complete. Net Paddy Accepted: ${df.qty} Qtl. Receipt: RCP-2026-${5000 + idx}.`,
+          `notif-${df.id}-3`, profId, df.mobile,
+          payStatus === 'PAID' ? 'Payment Credited' : 'Payment Processing',
+          payStatus === 'PAID'
+            ? `DBT-PFMS: ₹${netAmt.toLocaleString('en-IN')} has been credited to your Indian Overseas Bank A/C *******7782.`
+            : `PFMS DBT payout of ₹${netAmt.toLocaleString('en-IN')} initiated to Indian Overseas Bank A/C *******7782.`
         );
       }
     });

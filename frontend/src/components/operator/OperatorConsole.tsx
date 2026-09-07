@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { User, LanguageCode } from '../../../../shared/src/types';
-import { translations } from '../../i18n/translations';
+import {
+  translations,
+  localizeStatus,
+  localizeVillage,
+  localizeCounter,
+  localizeCommodity,
+  localizeCentreName
+} from '../../i18n/translations';
 import confetti from 'canvas-confetti';
 import {
   Users, CheckCircle, Clock, AlertOctagon, ArrowRight, UserPlus,
@@ -433,13 +440,12 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                     <td className="mono" style={{ fontWeight: 800, color: '#15803d', fontSize: '1.05rem' }}>
                       ₹{p.amount.toLocaleString('en-IN')}
                     </td>
-                    <td className="mono" style={{ fontSize: '0.8rem' }}>{p.payment_ref_masked}</td>
-                    <td>
+                    <td className="mono" style={{ fontSize: '0.8rem' }}>{p.payment_ref_masked}</td>                    <td>
                       <span className={`badge ${
                         p.status === 'PAID' ? 'badge-emerald' :
                         p.status === 'PROCESSING' ? 'badge-amber' : 'badge-slate'
                       }`}>
-                        {p.status}
+                        {localizeStatus(p.status, currentLanguage)}
                       </span>
                     </td>
                     <td style={{ textAlign: 'right' }}>
@@ -452,17 +458,8 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                           {t.operator.dbtDesk.confirmCredit}
                         </button>
                       )}
-                      {p.status === 'INITIATED' && (
-                        <button
-                          onClick={() => handleUpdatePaymentStatus(p.id, 'PROCESSING')}
-                          className="btn btn-secondary"
-                          style={{ padding: '6px 14px', fontSize: '0.8rem' }}
-                        >
-                          {t.operator.dbtDesk.sendPfms}
-                        </button>
-                      )}
                       {p.status === 'PAID' && (
-                        <span style={{ fontSize: '0.8rem', color: '#15803d', fontWeight: 700 }}>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--emerald-600)', fontWeight: 700 }}>
                           {t.operator.dbtDesk.credited}
                         </span>
                       )}
@@ -475,42 +472,36 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
         </div>
       )}
 
-      {/* Bay Selector & Primary Call Next Control Station */}
-      <div className="modern-card" style={{ padding: '20px 24px', marginBottom: '24px', background: 'white' }}>
+      {/* Bay Selector & Next Caller Bar */}
+      <div className="modern-card" style={{ padding: '24px', marginBottom: '24px', background: 'white' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
-          {/* Weighing Bays Grid */}
+          {/* Active Bay Segmented Tabs */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--slate-800)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              {t.operator.baySelector.label}
-            </span>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              {counters.map((c: any) => {
-                const isSelected = selectedCounterId === c.id;
-                return (
+            <div>
+              <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700 }}>
+                {t.operator.baySelector.label}
+              </span>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+                {counters.map((cnt: any) => (
                   <button
-                    key={c.id}
-                    onClick={() => setSelectedCounterId(c.id)}
+                    key={cnt.id}
+                    onClick={() => setSelectedCounterId(cnt.id)}
                     style={{
-                      padding: '10px 16px',
-                      borderRadius: '14px',
-                      border: isSelected ? '2px solid var(--emerald-600)' : '1px solid var(--slate-200)',
-                      background: isSelected ? '#ecfdf5' : 'white',
+                      padding: '8px 16px',
+                      borderRadius: '12px',
+                      border: selectedCounterId === cnt.id ? '2px solid var(--emerald-600)' : '1px solid var(--slate-200)',
+                      background: selectedCounterId === cnt.id ? '#ecfdf5' : 'white',
+                      color: selectedCounterId === cnt.id ? 'var(--emerald-800)' : 'var(--slate-700)',
+                      fontWeight: 700,
+                      fontSize: '0.82rem',
                       cursor: 'pointer',
-                      textAlign: 'left',
-                      transition: 'all 0.2s ease',
-                      boxShadow: isSelected ? '0 4px 12px rgba(16, 185, 129, 0.15)' : 'none'
+                      transition: 'all 0.15s ease'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: isSelected ? '#10b981' : '#94a3b8' }} />
-                      <strong style={{ fontSize: '0.88rem', color: isSelected ? '#064e3b' : 'var(--slate-800)' }}>{c.counter_code}</strong>
-                    </div>
-                    <span className="mono" style={{ display: 'block', fontSize: '0.75rem', color: isSelected ? '#047857' : 'var(--slate-400)', marginTop: '2px', fontWeight: 700 }}>
-                      {c.current_token_no ? `${t.operator.baySelector.serving} ${c.current_token_no}` : t.operator.baySelector.bayFree}
-                    </span>
+                    {localizeCounter(cnt.counter_code, currentLanguage)}
                   </button>
-                );
-              })}
+                ))}
+              </div>
             </div>
           </div>
 
@@ -624,12 +615,12 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                     <td>
                       <strong style={{ color: 'var(--slate-900)', fontSize: '0.95rem' }}>{entry.farmer_name}</strong>
                       <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--slate-500)' }}>
-                        📍 {entry.village} • {entry.farmer_mobile}
+                        📍 {localizeVillage(entry.village, currentLanguage)} • {entry.farmer_mobile}
                       </span>
                     </td>
 
                     <td className="mono" style={{ fontWeight: 700, fontSize: '0.95rem' }}>
-                      {entry.expected_qty} Qtl
+                      {entry.expected_qty} {t.common.quintals}
                     </td>
 
                     <td>
@@ -639,12 +630,12 @@ export const OperatorConsole: React.FC<OperatorConsoleProps> = ({ currentUser, c
                         entry.state === 'COMPLETED' ? 'badge-indigo' :
                         entry.state === 'NO_SHOW' ? 'badge-red' : 'badge-slate'
                       }`}>
-                        {entry.state}
+                        {localizeStatus(entry.state, currentLanguage)}
                       </span>
                     </td>
 
                     <td style={{ fontSize: '0.85rem', color: 'var(--slate-600)' }}>
-                      {entry.assigned_counter_code || '—'}
+                      {localizeCounter(entry.assigned_counter_code, currentLanguage) || '—'}
                     </td>
 
                     <td style={{ textAlign: 'right' }}>

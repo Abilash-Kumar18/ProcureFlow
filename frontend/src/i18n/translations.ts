@@ -798,3 +798,261 @@ export const translations = {
     }
   }
 };
+
+import { LanguageCode } from '../../../shared/src/types';
+
+export const statusTranslations: Record<string, Record<LanguageCode, string>> = {
+  WAITING: { en: 'WAITING', hi: 'प्रतीक्षारत', ta: 'காத்திருப்பு' },
+  CONFIRMED: { en: 'CONFIRMED', hi: 'पुष्टीकृत', ta: 'உறுதி செய்யப்பட்டது' },
+  BOOKED: { en: 'BOOKED', hi: 'बुक किया गया', ta: 'முன்பதிவு' },
+  CALLED: { en: 'CALLED', hi: 'बुलाया गया', ta: 'அழைக்கப்பட்டது' },
+  IN_SERVICE: { en: 'IN_SERVICE', hi: 'प्रक्रियाधीन', ta: 'சேவையில் உள்ளது' },
+  COMPLETED: { en: 'COMPLETED', hi: 'முடிவடைந்தது', ta: 'முடிவடைந்தது' },
+  CHECKED_IN: { en: 'CHECKED_IN', hi: 'चेक-इन पूर्ण', ta: 'சரிபார்க்கப்பட்டது' },
+  NO_SHOW: { en: 'NO_SHOW', hi: 'अनुपस्थित', ta: 'வரவில்லை' },
+  PAID: { en: 'PAID', hi: 'भुगतान सफल', ta: 'பணம் செலுத்தப்பட்டது' },
+  PROCESSING: { en: 'PROCESSING', hi: 'प्रसंस्करण जारी', ta: 'பரிசீலனையில் உள்ளது' },
+  INITIATED: { en: 'INITIATED', hi: 'प्रारंभ किया गया', ta: 'தொடங்கப்பட்டது' },
+  ACCEPTED: { en: 'ACCEPTED', hi: 'स्वीकृत', ta: 'ஏற்றுக்கொள்ளப்பட்டது' },
+  GRADE_A: { en: 'GRADE A', hi: 'ग्रेड ए', ta: 'கிரேடு ஏ' },
+  COMMON: { en: 'COMMON', hi: 'सामान्य', ta: 'சாதாரண' },
+  OPEN: { en: 'OPEN', hi: 'खुला है', ta: 'திறந்துள்ளது' },
+  CONGESTED: { en: 'CONGESTED', hi: 'भारी भीड़', ta: 'நெரிசல்' },
+  FULL: { en: 'FULL', hi: 'पूर्ण', ta: 'நிறைந்தது' },
+  AVAILABLE: { en: 'AVAILABLE', hi: 'उपलब्ध', ta: 'கிடைக்கும்' },
+  ACTIVE: { en: 'ACTIVE', hi: 'सक्रिय', ta: 'செயலில் உள்ளது' }
+};
+
+export const centreNameTranslations: Record<string, Record<LanguageCode, string>> = {
+  'Pillaiyarpatti Primary Procurement Centre': {
+    en: 'Pillaiyarpatti Primary Procurement Centre',
+    hi: 'पिल्लैयारपट्टी प्राथमिक खरीद केंद्र',
+    ta: 'பிள்ளையார்பட்டி முதன்மை கொள்முதல் நிலையம்'
+  },
+  'Vallam Regulated Mandi Complex': {
+    en: 'Vallam Regulated Mandi Complex',
+    hi: 'वल्लम विनियमित मंडी परिसर',
+    ta: 'வல்லம் ஒழுங்குமுறை விற்பனைக்கூடம்'
+  },
+  'Budalur Primary Agri Co-op Society': {
+    en: 'Budalur Primary Agri Co-op Society',
+    hi: 'बुदलूर प्राथमिक कृषि सहकारी समिति',
+    ta: 'பூதலூர் தொடக்க வேளாண்மை கூட்டுறவு சங்கம்'
+  },
+  'Thiruvaiyaru Direct Purchase Depot': {
+    en: 'Thiruvaiyaru Direct Purchase Depot',
+    hi: 'तिरुवैयारु प्रत्यक्ष खरीद डिपो',
+    ta: 'திருவையாறு நேரடி கொள்முதல் நிலையம்'
+  }
+};
+
+export const centreAddressTranslations: Record<string, Record<LanguageCode, string>> = {
+  'Main Road, Pillaiyarpatti, Thanjavur - 613403': {
+    en: 'Main Road, Pillaiyarpatti, Thanjavur - 613403',
+    hi: 'मुख्य मार्ग, पिल्लैयारपट्टी, तंजावूर - 613403',
+    ta: 'முதன்மை சாலை, பிள்ளையார்பட்டி, தஞ்சாவூர் - 613403'
+  },
+  'Trichy Road, Vallam, Thanjavur - 613405': {
+    en: 'Trichy Road, Vallam, Thanjavur - 613405',
+    hi: 'त्रिची रोड, वल्लम, तंजावूर - 613405',
+    ta: 'திருச்சி சாலை, வல்லம், தஞ்சாவூர் - 613405'
+  },
+  'Station Road, Budalur, Thanjavur - 613602': {
+    en: 'Station Road, Budalur, Thanjavur - 613602',
+    hi: 'स्टेशन रोड, बुदलूर, तंजावूर - 613602',
+    ta: 'ஸ்டேஷன் ரோடு, பூதலூர், தஞ்சாவூர் - 613602'
+  },
+  'Cauvery Bank Road, Thiruvaiyaru - 613204': {
+    en: 'Cauvery Bank Road, Thiruvaiyaru - 613204',
+    hi: 'कावेरी बैंक रोड, तिरुवैयारु - 613204',
+    ta: 'காவிரி கரை சாலை, திருவையாறு - 613204'
+  }
+};
+
+export const commodityTranslations: Record<string, Record<LanguageCode, string>> = {
+  'Paddy (Grade A)': { en: 'Paddy (Grade A)', hi: 'धान (ग्रेड ए)', ta: 'நெல் (கிரேடு ஏ)' },
+  'Wheat': { en: 'Wheat', hi: 'गेहूं', ta: 'கோதுமை' },
+  'BPT-5204 (Samba)': { en: 'BPT-5204 (Samba)', hi: 'बीपीटी-5204 (सांबा)', ta: 'பிபிடி-5204 (சாம்பா)' },
+  'HD-2967': { en: 'HD-2967', hi: 'एचडी-2967', ta: 'எச்டி-2967' },
+  'GRADE_A': { en: 'Grade A', hi: 'ग्रेड ए', ta: 'கிரேடு ஏ' }
+};
+
+export const villageTranslations: Record<string, Record<LanguageCode, string>> = {
+  'Pillaiyarpatti South': { en: 'Pillaiyarpatti South', hi: 'पिल्लैयारपट्टी दक्षिण', ta: 'பிள்ளையார்பட்டி தெற்கு' },
+  'Vallam Pudur': { en: 'Vallam Pudur', hi: 'वल्लम पुदूर', ta: 'வல்லம் புதூர்' },
+  'Mariammankoil': { en: 'Mariammankoil', hi: 'मरियम्मनकोइल', ta: 'மாரியம்மன்கோவில்' },
+  'Nanjikottai': { en: 'Nanjikottai', hi: 'नांजीकोट्टई', ta: 'நஞ்சிக்கோட்டை' },
+  'Pillaiyarpatti': { en: 'Pillaiyarpatti', hi: 'पिल्लैयारपट्टी', ta: 'பிள்ளையார்பட்டி' },
+  'Vilar': { en: 'Vilar', hi: 'विलार', ta: 'விளார்' },
+  'Alakkudi': { en: 'Alakkudi', hi: 'अलक्कुडी', ta: 'ஆலக்குடி' },
+  'Kandiyur': { en: 'Kandiyur', hi: 'कंडीयूर', ta: 'கண்டியூர்' },
+  'Thiruvaiyaru': { en: 'Thiruvaiyaru', hi: 'तिरुवैयारु', ta: 'திருவையாறு' }
+};
+
+export const bankTranslations: Record<string, Record<LanguageCode, string>> = {
+  'State Bank of India': { en: 'State Bank of India', hi: 'भारतीय स्टेट बैंक', ta: 'பாரத ஸ்டேட் வங்கி' },
+  'Indian Overseas Bank': { en: 'Indian Overseas Bank', hi: 'इंडियन ओवरसीज बैंक', ta: 'இந்தியன் ஓவர்சீஸ் வங்கி' }
+};
+
+export const counterTranslations: Record<string, Record<LanguageCode, string>> = {
+  'Counter 1': { en: 'Counter 1', hi: 'काउंटर 1', ta: 'கவுண்டர் 1' },
+  'Counter 2': { en: 'Counter 2', hi: 'काउंटर 2', ta: 'கவுண்டர் 2' },
+  'Counter 3': { en: 'Counter 3', hi: 'काउंटर 3', ta: 'கவுண்டர் 3' },
+  'Counter 1 (Weighbridge)': { en: 'Counter 1 (Weighbridge)', hi: 'काउंटर 1 (वे-ब्रिज)', ta: 'கவுண்டர் 1 (எடை மேடை)' },
+  'Counter 1 (Weighbridge Bay)': { en: 'Counter 1 (Weighbridge Bay)', hi: 'काउंटर 1 (वे-ब्रिज बे)', ta: 'கவுண்டர் 1 (எடை மேடை பிரிவு)' },
+  'Counter 2 (Quality & Moisture)': { en: 'Counter 2 (Quality & Moisture)', hi: 'काउंटर 2 (गुणवत्ता व नमी)', ta: 'கவுண்டர் 2 (தரம் & ஈரப்பதம்)' },
+  'Counter 3 (Express Verification)': { en: 'Counter 3 (Express Verification)', hi: 'काउंटर 3 (एक्सप्रेस सत्यापन)', ta: 'கவுண்டர் 3 (விரைவு சரிபார்ப்பு)' },
+  'Counter 1 (Heavy Weighbridge)': { en: 'Counter 1 (Heavy Weighbridge)', hi: 'काउंटर 1 (भारी वे-ब्रिज)', ta: 'கவுண்டர் 1 (பெரிய எடை மேடை)' }
+};
+
+export const notificationTitleTranslations: Record<string, Record<LanguageCode, string>> = {
+  'Booking Confirmed': { en: 'Booking Confirmed', hi: 'बुकिंग की पुष्टि हुई', ta: 'முன்பதிவு உறுதி செய்யப்பட்டது' },
+  'Arrival Reminder': { en: 'Arrival Reminder', hi: 'आगमन स्मरणपत्र', ta: 'வருகை நினைவூட்டல்' },
+  'Check-in Verified': { en: 'Check-in Verified', hi: 'चेक-इन सत्यापित हुआ', ta: 'செக்-இன் சரிபார்க்கப்பட்டது' },
+  'Procurement Completed': { en: 'Procurement Completed', hi: 'खरीद पूरी हुई', ta: 'கொள்முதல் நிறைவடைந்தது' },
+  'Payment Credited': { en: 'Payment Credited', hi: 'बैंक में राशि जमा हुई', ta: 'வங்கி கணக்கில் பணம் வரவு' },
+  'Payment Processing': { en: 'Payment Processing', hi: 'भुगतान प्रक्रियाधीन', ta: 'பரிசீலனையில் உள்ள பணம்' }
+};
+
+export const channelTranslations: Record<string, Record<LanguageCode, string>> = {
+  SMS: { en: 'SMS', hi: 'एसएमएस', ta: 'SMS' },
+  IN_APP: { en: 'IN_APP', hi: 'ऐप सूचना', ta: 'செயலி அறிவிப்பு' },
+  PUSH: { en: 'PUSH', hi: 'पुश अलर्ट', ta: 'நேரடி அறிவிப்பு' }
+};
+
+export function localizeStatus(status: string | undefined | null, lang: LanguageCode): string {
+  if (!status) return '';
+  return statusTranslations[status]?.[lang] || status;
+}
+
+export function localizeCentreName(name: string | undefined | null, lang: LanguageCode): string {
+  if (!name) return '';
+  return centreNameTranslations[name]?.[lang] || name;
+}
+
+export function localizeCentreAddress(addr: string | undefined | null, lang: LanguageCode): string {
+  if (!addr) return '';
+  return centreAddressTranslations[addr]?.[lang] || addr;
+}
+
+export function localizeCommodity(comm: string | undefined | null, lang: LanguageCode): string {
+  if (!comm) return '';
+  return commodityTranslations[comm]?.[lang] || comm;
+}
+
+export function localizeVillage(village: string | undefined | null, lang: LanguageCode): string {
+  if (!village) return '';
+  return villageTranslations[village]?.[lang] || village;
+}
+
+export function localizeBank(bank: string | undefined | null, lang: LanguageCode): string {
+  if (!bank) return '';
+  return bankTranslations[bank]?.[lang] || bank;
+}
+
+export function localizeCounter(counter: string | undefined | null, lang: LanguageCode): string {
+  if (!counter) return '';
+  return counterTranslations[counter]?.[lang] || counter;
+}
+
+export function localizeChannel(channel: string | undefined | null, lang: LanguageCode): string {
+  if (!channel) return '';
+  return channelTranslations[channel]?.[lang] || channel;
+}
+
+export function localizeNotificationTitle(title: string | undefined | null, lang: LanguageCode): string {
+  if (!title) return '';
+  return notificationTitleTranslations[title]?.[lang] || title;
+}
+
+export function localizeNotificationMessage(msg: string | undefined | null, lang: LanguageCode): string {
+  if (!msg) return '';
+  if (lang === 'en') return msg;
+
+  if (lang === 'ta') {
+    // 1. Booking confirmed message
+    if (msg.includes('Your slot for') || msg.includes('Confirmed! Token:')) {
+      const qtyMatch = msg.match(/(\d+(?:\.\d+)?)\s*(?:Quintals|Qtl)/i);
+      const tokenMatch = msg.match(/TK-\d+/i);
+      const windowMatch = msg.match(/(\d{1,2}:\d{2}\s*[-–]\s*\d{1,2}:\d{2})/);
+      const qty = qtyMatch ? qtyMatch[1] : '20';
+      const token = tokenMatch ? tokenMatch[0] : 'TK-009';
+      const win = windowMatch ? windowMatch[1] : '11:00-13:00';
+      return `ப்ரோக்யூர்ஃப்ளோ: பிள்ளையார்பட்டி PPC-யில் ${qty} குவிண்டால் நெல் கொள்முதலுக்கான உங்கள் முன்பதிவு உறுதி செய்யப்பட்டது. டோக்கன்: ${token}, நேரம்: ${win}.`;
+    }
+    // 2. Arrival Reminder
+    if (msg.includes('Please arrive at') || msg.includes('with land certificate')) {
+      return 'நிலச் சான்றிதழ் மற்றும் அடையாளச் சான்றுடன் காலை 10:45 மணி முதல் 11:15 மணிக்குள் பிள்ளையார்பட்டி PPC மையத்திற்கு வரவும்.';
+    }
+    // 3. Check-in Verified
+    if (msg.includes('Check-in confirmed!') || msg.includes('Position')) {
+      const posMatch = msg.match(/Position\s*(\d+)/i);
+      const aheadMatch = msg.match(/(\d+)\s*farmers ahead/i);
+      const waitMatch = msg.match(/~(\d+)\s*mins/i);
+      const pos = posMatch ? posMatch[1] : '9';
+      const ahead = aheadMatch ? aheadMatch[1] : '3';
+      const wait = waitMatch ? waitMatch[1] : '35';
+      return `செக்-இன் உறுதி செய்யப்பட்டது! நீங்கள் வரிசை எண் ${pos} இல் உள்ளீர்கள் (முன்னால் ${ahead} விவசாயிகள்). உத்தேச காத்திருப்பு: ~${wait} நிமிடங்கள். கவுண்டர் அழைப்பைக் கவனிக்கவும்.`;
+    }
+    // 4. Procurement Completed
+    if (msg.includes('Weighbridge measurement complete') || msg.includes('Net Paddy Accepted')) {
+      const qtyMatch = msg.match(/(\d+(?:\.\d+)?)\s*Qtl/i);
+      const rcpMatch = msg.match(/RCP-\d+-\d+/i);
+      return `எடை மேடையில் எடை சரிபார்ப்பு முடிந்தது. ஏற்றுக்கொள்ளப்பட்ட நிகர நெல்: ${qtyMatch ? qtyMatch[1] : '25.0'} குவிண்டால். ரசீது எண்: ${rcpMatch ? rcpMatch[0] : 'RCP-2026-5000'}.`;
+    }
+    // 5. Payment Credited / Processing
+    if (msg.includes('credited to your') || msg.includes('DBT-PFMS:')) {
+      const amtMatch = msg.match(/₹([\d,]+)/);
+      return `நேரடி வங்கி பரிமாற்றம் (DBT): ₹${amtMatch ? amtMatch[1] : '58,000'} உங்கள் இந்தியன் ஓவர்சீஸ் வங்கிக் கணக்கில் வரவு வைக்கப்பட்டது.`;
+    }
+    if (msg.includes('PFMS DBT payout')) {
+      const amtMatch = msg.match(/₹([\d,]+)/);
+      return `PFMS நேரடி வங்கி பரிமாற்றம் ₹${amtMatch ? amtMatch[1] : '46,400'} உங்கள் வங்கிக் கணக்கிற்கு அனுப்பப்பட்டு பரிசீலனையில் உள்ளது.`;
+    }
+  }
+
+  if (lang === 'hi') {
+    // 1. Booking confirmed message
+    if (msg.includes('Your slot for') || msg.includes('Confirmed! Token:')) {
+      const qtyMatch = msg.match(/(\d+(?:\.\d+)?)\s*(?:Quintals|Qtl)/i);
+      const tokenMatch = msg.match(/TK-\d+/i);
+      const windowMatch = msg.match(/(\d{1,2}:\d{2}\s*[-–]\s*\d{1,2}:\d{2})/);
+      const qty = qtyMatch ? qtyMatch[1] : '20';
+      const token = tokenMatch ? tokenMatch[0] : 'TK-009';
+      const win = windowMatch ? windowMatch[1] : '11:00-13:00';
+      return `प्रोक्योरफ्लो: पिल्लैयारपट्टी पीपीसी पर ${qty} क्विंटल धान हेतु आपका स्लॉट कन्फर्म हो गया है। टोकन: ${token}, समय: ${win}।`;
+    }
+    // 2. Arrival Reminder
+    if (msg.includes('Please arrive at') || msg.includes('with land certificate')) {
+      return 'कृपया भूमि प्रमाण पत्र एवं पहचान पत्र के साथ सुबह 10:45 से 11:15 के बीच पिल्लैयारपट्टी पीपीसी पर पहुंचें।';
+    }
+    // 3. Check-in Verified
+    if (msg.includes('Check-in confirmed!') || msg.includes('Position')) {
+      const posMatch = msg.match(/Position\s*(\d+)/i);
+      const aheadMatch = msg.match(/(\d+)\s*farmers ahead/i);
+      const waitMatch = msg.match(/~(\d+)\s*mins/i);
+      const pos = posMatch ? posMatch[1] : '9';
+      const ahead = aheadMatch ? aheadMatch[1] : '3';
+      const wait = waitMatch ? waitMatch[1] : '35';
+      return `चेक-इन की पुष्टि हो गई! आप स्थिति ${pos} पर हैं (आगे ${ahead} किसान)। अनुमानित प्रतीक्षा: ~${wait} मिनट। काउंटर कॉल के लिए स्क्रीन देखें।`;
+    }
+    // 4. Procurement Completed
+    if (msg.includes('Weighbridge measurement complete') || msg.includes('Net Paddy Accepted')) {
+      const qtyMatch = msg.match(/(\d+(?:\.\d+)?)\s*Qtl/i);
+      const rcpMatch = msg.match(/RCP-\d+-\d+/i);
+      return `वे-ब्रिज तौल कार्य पूर्ण हुआ। स्वीकृत शुद्ध धान: ${qtyMatch ? qtyMatch[1] : '25.0'} क्विंटल। रसीद: ${rcpMatch ? rcpMatch[0] : 'RCP-2026-5000'}।`;
+    }
+    // 5. Payment Credited / Processing
+    if (msg.includes('credited to your') || msg.includes('DBT-PFMS:')) {
+      const amtMatch = msg.match(/₹([\d,]+)/);
+      return `डीबीटी-पीएफएमएस: ₹${amtMatch ? amtMatch[1] : '58,000'} आपके बैंक खाते में सफलतापूर्वक जमा कर दिए गए हैं।`;
+    }
+    if (msg.includes('PFMS DBT payout')) {
+      const amtMatch = msg.match(/₹([\d,]+)/);
+      return `पीएफएमएस डीबीटी भुगतान ₹${amtMatch ? amtMatch[1] : '46,400'} आपके बैंक खाते में अंतरण हेतु प्रक्रियाधीन है।`;
+    }
+  }
+
+  return msg;
+}
+

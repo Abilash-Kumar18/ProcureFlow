@@ -25,9 +25,15 @@ export const App: React.FC = () => {
         const data = await res.json();
         if (data.data && data.data.length > 0) {
           setPersonas(data.data);
-          const ramesh = data.data.find((u: User) => u.name.includes('Ramesh')) || data.data[0];
-          setCurrentUser(ramesh);
-          setActiveTab(ramesh.role === 'DISTRICT_ADMIN' ? 'ADMIN' : ramesh.role as any);
+          setCurrentUser(prev => {
+            if (!prev) {
+              const ramesh = data.data.find((u: User) => u.name.includes('Ramesh')) || data.data[0];
+              setActiveTab(ramesh.role === 'DISTRICT_ADMIN' ? 'ADMIN' : ramesh.role as any);
+              return ramesh;
+            }
+            const match = data.data.find((u: User) => u.id === prev.id);
+            return match || prev;
+          });
         }
       } catch (err) {
         console.error('Failed to load personas:', err);
@@ -124,8 +130,10 @@ export const App: React.FC = () => {
             <button
               onClick={() => {
                 setActiveTab('FARMER');
-                const farmer = personas.find(p => p.role === 'FARMER');
-                if (farmer) setCurrentUser(farmer);
+                if (currentUser?.role !== 'FARMER') {
+                  const farmer = personas.find(p => p.role === 'FARMER');
+                  if (farmer) setCurrentUser(farmer);
+                }
               }}
               style={{
                 display: 'flex',
