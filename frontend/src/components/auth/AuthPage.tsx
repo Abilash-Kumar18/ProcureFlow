@@ -9,7 +9,12 @@ import {
   User as UserIcon,
   Sprout,
   Landmark,
-  AlertCircle
+  AlertCircle,
+  Mail,
+  CheckCircle2,
+  XCircle,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -37,12 +42,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({
 
   // Admin login state (initially empty)
   const [adminEmail, setAdminEmail] = useState('');
-  const [adminKey, setAdminKey] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Dynamic localization
   const t = translations[currentLanguage];
+  const a = t.auth;
 
   // Restrict mobile input to numbers only (0-9) and max 10 digits
   const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +82,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     }
   };
 
+  // Password validation rules for Admin
+  const hasCapitalLetter = /[A-Z]/.test(adminPassword);
+  const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(adminPassword);
+  const hasNumber = /[0-9]/.test(adminPassword);
+  const hasAlphabet = /[a-zA-Z]/.test(adminPassword);
+
   // Handle Farmer OTP Login with validation
   const handleFarmerLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,27 +95,26 @@ export const AuthPage: React.FC<AuthPageProps> = ({
 
     // Validation 1: Farmer Name required
     if (!farmerName.trim()) {
-      setErrorMessage('Please enter your full name.');
+      setErrorMessage(a.errEnterName);
       return;
     }
 
     // Validation 2: Mobile number must be exactly 10 digits
     if (mobileNumber.length !== 10) {
-      setErrorMessage('Mobile number must be exactly 10 digits.');
+      setErrorMessage(a.errMobile10);
       return;
     }
 
     // Validation 3: OTP must be 4 digits
     const enteredOtp = otpCode.join('');
     if (enteredOtp.length < 4) {
-      setErrorMessage('Please enter the 4-digit OTP.');
+      setErrorMessage(a.errOtp4);
       return;
     }
 
     setIsLoading(true);
 
     setTimeout(() => {
-      // Find matching farmer or construct user profile from inputs
       const existingFarmer = personas.find(p => p.role === 'FARMER');
       const authenticatedUser: User = {
         id: existingFarmer?.id || `user-farmer-${Date.now()}`,
@@ -122,18 +135,44 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     }, 400);
   };
 
-  // Handle Admin Login with validation
+  // Handle Admin Login with strict validation
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!adminEmail.trim()) {
-      setErrorMessage('Please enter your administrative email.');
+    const emailTrimmed = adminEmail.trim();
+    if (!emailTrimmed) {
+      setErrorMessage(a.errAdminEmail);
       return;
     }
 
-    if (!adminKey.trim()) {
-      setErrorMessage('Please enter your administrative security key.');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailTrimmed)) {
+      setErrorMessage(a.errAdminEmailValid);
+      return;
+    }
+
+    // Validation 1: At least 1 capital letter
+    if (!hasCapitalLetter) {
+      setErrorMessage(a.errPasswordCapital);
+      return;
+    }
+
+    // Validation 2: At least 1 special character
+    if (!hasSpecialChar) {
+      setErrorMessage(a.errPasswordSpecial);
+      return;
+    }
+
+    // Validation 3: At least 1 number
+    if (!hasNumber) {
+      setErrorMessage(a.errPasswordNumber);
+      return;
+    }
+
+    // Validation 4: At least 1 alphabet
+    if (!hasAlphabet) {
+      setErrorMessage(a.errPasswordAlphabet);
       return;
     }
 
@@ -143,9 +182,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       const admin = personas.find(p => p.role === 'DISTRICT_ADMIN') || {
         id: 'admin-01',
         role: 'DISTRICT_ADMIN',
-        name: adminEmail.split('@')[0].toUpperCase(),
+        name: emailTrimmed.split('@')[0].toUpperCase(),
         mobile: '9840011223',
-        email: adminEmail,
+        email: emailTrimmed,
         status: 'ACTIVE',
         district_id: 'dist-thanjavur',
         created_at: new Date().toISOString()
@@ -155,15 +194,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       onLoginSuccess(admin);
       setIsLoading(false);
     }, 400);
-  };
-
-  // 1-Click Quick Demo Launcher
-  const handleQuickDemo = (role: 'FARMER' | 'DISTRICT_ADMIN') => {
-    const user = personas.find(p => p.role === role);
-    if (user) {
-      confetti({ particleCount: 60, spread: 60, origin: { y: 0.6 } });
-      onLoginSuccess(user);
-    }
   };
 
   return (
@@ -230,38 +260,25 @@ export const AuthPage: React.FC<AuthPageProps> = ({
           </div>
         </div>
 
-        {/* Language Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.1)', padding: '3px', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
+        {/* Language Controls (English & Tamil) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.12)', padding: '3px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
             <button
               onClick={() => onSelectLanguage('en')}
               style={{
                 background: currentLanguage === 'en' ? 'white' : 'transparent',
                 color: currentLanguage === 'en' ? '#0f172a' : '#cbd5e1',
                 border: 'none',
-                borderRadius: '7px',
-                padding: '4px 10px',
-                fontSize: '0.78rem',
+                borderRadius: '9px',
+                padding: '6px 14px',
+                fontSize: '0.82rem',
                 fontWeight: 700,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: currentLanguage === 'en' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none'
               }}
             >
-              EN
-            </button>
-            <button
-              onClick={() => onSelectLanguage('hi')}
-              style={{
-                background: currentLanguage === 'hi' ? 'white' : 'transparent',
-                color: currentLanguage === 'hi' ? '#0f172a' : '#cbd5e1',
-                border: 'none',
-                borderRadius: '7px',
-                padding: '4px 10px',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                cursor: 'pointer'
-              }}
-            >
-              हिन्दी
+              English
             </button>
             <button
               onClick={() => onSelectLanguage('ta')}
@@ -269,14 +286,33 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 background: currentLanguage === 'ta' ? 'white' : 'transparent',
                 color: currentLanguage === 'ta' ? '#0f172a' : '#cbd5e1',
                 border: 'none',
-                borderRadius: '7px',
-                padding: '4px 10px',
-                fontSize: '0.78rem',
+                borderRadius: '9px',
+                padding: '6px 14px',
+                fontSize: '0.82rem',
                 fontWeight: 700,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: currentLanguage === 'ta' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none'
               }}
             >
               தமிழ்
+            </button>
+            <button
+              onClick={() => onSelectLanguage('hi')}
+              style={{
+                background: currentLanguage === 'hi' ? 'white' : 'transparent',
+                color: currentLanguage === 'hi' ? '#0f172a' : '#cbd5e1',
+                border: 'none',
+                borderRadius: '9px',
+                padding: '6px 12px',
+                fontSize: '0.82rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: currentLanguage === 'hi' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none'
+              }}
+            >
+              हिन्दी
             </button>
           </div>
         </div>
@@ -314,7 +350,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 marginTop: '8px'
               }}
             >
-              Procurement Portal Access
+              {a.portalTitle}
             </h1>
           </div>
 
@@ -340,7 +376,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 style={{ fontSize: '0.9rem', padding: '11px 8px' }}
               >
                 <Sprout size={18} />
-                <span>Farmer Login</span>
+                <span>{a.farmerLoginTab}</span>
               </button>
 
               <button
@@ -350,7 +386,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 style={{ fontSize: '0.9rem', padding: '11px 8px' }}
               >
                 <Landmark size={18} />
-                <span>Admin Login</span>
+                <span>{a.adminLoginTab}</span>
               </button>
             </div>
 
@@ -381,7 +417,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 {/* Farmer Name / Username */}
                 <div style={{ marginBottom: '14px' }}>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
-                    Farmer Name / Username
+                    {a.farmerNameLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                     <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
@@ -391,7 +427,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                       type="text"
                       value={farmerName}
                       onChange={(e) => { setFarmerName(e.target.value); if (errorMessage) setErrorMessage(null); }}
-                      placeholder="Enter your name"
+                      placeholder={a.farmerNamePlaceholder}
                       required
                       style={{
                         width: '100%',
@@ -408,7 +444,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 {/* Mobile Number with Strict Numeric Validation */}
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
-                    Mobile Number (10 Digits)
+                    {a.mobileLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                     <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
@@ -421,7 +457,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                       maxLength={10}
                       value={mobileNumber}
                       onChange={handleMobileChange}
-                      placeholder="Enter 10-digit mobile number"
+                      placeholder={a.mobilePlaceholder}
                       required
                       style={{
                         width: '100%',
@@ -435,18 +471,18 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     />
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px', fontSize: '0.75rem', color: 'var(--slate-500)' }}>
-                    <span>Numbers only (no letters or special characters)</span>
+                    <span>{a.mobileHelper}</span>
                     <span style={{ fontWeight: 700, color: mobileNumber.length === 10 ? 'var(--emerald-600)' : 'var(--slate-400)' }}>
                       {mobileNumber.length}/10
                     </span>
                   </div>
                 </div>
 
-                {/* 4-Digit OTP Simulation Input */}
+                {/* 4-Digit OTP Input */}
                 <div style={{ marginBottom: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)' }}>
-                      Enter 4-Digit OTP
+                      {a.otpLabel}
                     </label>
                   </div>
                   <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
@@ -474,10 +510,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   style={{ width: '100%', padding: '14px', fontSize: '1rem' }}
                 >
                   {isLoading ? (
-                    <span>Verifying...</span>
+                    <span>{a.verifyingBtn}</span>
                   ) : (
                     <>
-                      <span>Enter Farmer Portal</span>
+                      <span>{a.farmerSubmitBtn}</span>
                       <ArrowRight size={18} />
                     </>
                   )}
@@ -487,56 +523,115 @@ export const AuthPage: React.FC<AuthPageProps> = ({
 
             {/* TAB 2: DISTRICT ADMIN LOGIN FORM */}
             {authRole === 'ADMIN' && (
-              <form onSubmit={handleAdminLogin}>
+              <form onSubmit={handleAdminLogin} autoComplete="off">
+                {/* Official Email Input */}
                 <div style={{ marginBottom: '14px' }}>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
-                    Official District Authority Email
+                    {a.adminEmailLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                     <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
-                      <UserIcon size={18} />
+                      <Mail size={18} />
                     </div>
                     <input
                       type="email"
+                      name="admin_login_email"
+                      id="admin_login_email"
+                      autoComplete="off"
                       value={adminEmail}
                       onChange={(e) => { setAdminEmail(e.target.value); if (errorMessage) setErrorMessage(null); }}
-                      placeholder="e.g. collector@thanjavur.nic.in"
+                      placeholder={a.adminEmailPlaceholder}
                       required
                       style={{
                         width: '100%',
                         padding: '12px 14px 12px 42px',
                         borderRadius: '12px',
                         border: '1.5px solid var(--slate-200)',
-                        fontSize: '0.9rem',
+                        fontSize: '0.92rem',
                         fontWeight: 600
                       }}
                     />
                   </div>
                 </div>
 
-                <div style={{ marginBottom: '20px' }}>
+                {/* Password Input with Strict Validation */}
+                <div style={{ marginBottom: '12px' }}>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
-                    Administrative Multi-Factor Key
+                    {a.adminPasswordLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                     <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
                       <Lock size={18} />
                     </div>
                     <input
-                      type="password"
-                      value={adminKey}
-                      onChange={(e) => { setAdminKey(e.target.value); if (errorMessage) setErrorMessage(null); }}
-                      placeholder="Enter security key"
+                      type={showPassword ? 'text' : 'password'}
+                      name="admin_login_password"
+                      id="admin_login_password"
+                      autoComplete="new-password"
+                      value={adminPassword}
+                      onChange={(e) => { setAdminPassword(e.target.value); if (errorMessage) setErrorMessage(null); }}
+                      placeholder={a.adminPasswordPlaceholder}
                       required
                       style={{
                         width: '100%',
-                        padding: '12px 14px 12px 42px',
+                        padding: '12px 42px 12px 42px',
                         borderRadius: '12px',
                         border: '1.5px solid var(--slate-200)',
                         fontSize: '0.95rem',
-                        fontFamily: "'JetBrains Mono', monospace"
+                        fontFamily: showPassword ? 'inherit' : "'JetBrains Mono', monospace"
                       }}
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{
+                        position: 'absolute',
+                        right: '12px',
+                        background: 'transparent',
+                        border: 'none',
+                        color: 'var(--slate-400)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Real-time Password Requirements Checklist */}
+                <div
+                  style={{
+                    background: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '12px',
+                    padding: '10px 14px',
+                    marginBottom: '20px',
+                    fontSize: '0.76rem',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '6px'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasCapitalLetter ? '#15803d' : 'var(--slate-500)', fontWeight: hasCapitalLetter ? 700 : 500 }}>
+                    {hasCapitalLetter ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                    <span>{a.reqCapital}</span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasSpecialChar ? '#15803d' : 'var(--slate-500)', fontWeight: hasSpecialChar ? 700 : 500 }}>
+                    {hasSpecialChar ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                    <span>{a.reqSpecial}</span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasNumber ? '#15803d' : 'var(--slate-500)', fontWeight: hasNumber ? 700 : 500 }}>
+                    {hasNumber ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                    <span>{a.reqNumber}</span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasAlphabet ? '#15803d' : 'var(--slate-500)', fontWeight: hasAlphabet ? 700 : 500 }}>
+                    {hasAlphabet ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                    <span>{a.reqAlphabet}</span>
                   </div>
                 </div>
 
@@ -553,7 +648,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     boxShadow: '0 4px 14px rgba(67, 56, 202, 0.35)'
                   }}
                 >
-                  {isLoading ? 'Authenticating...' : 'Access District Command Center'}
+                  {isLoading ? a.authenticatingBtn : a.adminSubmitBtn}
                 </button>
               </form>
             )}
