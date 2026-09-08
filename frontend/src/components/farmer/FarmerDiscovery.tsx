@@ -46,15 +46,19 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
   });
 
   return (
-    <div className="app-container" style={{ padding: '24px 20px 60px' }}>
+    <div className="app-container" style={{ padding: '24px 24px 60px' }}>
       
       {/* Header */}
       <div style={{ marginBottom: '20px' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-dark)' }}>
-          Find a Procurement Centre
+          {t.farmer.nav?.findCentre || 'Find a Procurement Centre'}
         </h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
-          Search by village, locality, or centre name to check available slots and queue wait times.
+          {currentLanguage === 'ta'
+            ? 'கிடைக்கும் நேர இடைவெளிகள் மற்றும் காத்திருப்பு நேரத்தை அறிய கிராமம், பகுதி அல்லது மையத்தின் பெயரை தேடவும்.'
+            : currentLanguage === 'hi'
+            ? 'उपलब्ध स्लॉट और कतार प्रतीक्षा समय जांचने के लिए गाँव, इलाके या केंद्र के नाम से खोजें।'
+            : 'Search by village, locality, or centre name to check available slots and queue wait times.'}
         </p>
       </div>
 
@@ -67,7 +71,7 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
             <Search size={16} color="var(--slate-400)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
-              placeholder="Search by village, locality or centre..."
+              placeholder={currentLanguage === 'ta' ? 'கிராமம், பகுதி அல்லது மையத்தை தேடுக...' : currentLanguage === 'hi' ? 'गाँव, इलाका या केंद्र खोजें...' : 'Search by village, locality or centre...'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -97,7 +101,7 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
                 cursor: 'pointer'
               }}
             >
-              All Centres ({centres.length})
+              {currentLanguage === 'ta' ? `அனைத்து மையங்கள் (${centres.length})` : currentLanguage === 'hi' ? `सभी केंद्र (${centres.length})` : `All Centres (${centres.length})`}
             </button>
 
             <button
@@ -113,7 +117,7 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
                 cursor: 'pointer'
               }}
             >
-              Available Today
+              {t.common.optimal}
             </button>
 
             <button
@@ -129,7 +133,7 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
                 cursor: 'pointer'
               }}
             >
-              Heavy Traffic
+              {t.common.heavyTraffic}
             </button>
           </div>
 
@@ -152,7 +156,7 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
                     {localizeCentreName(centre.name, currentLanguage)}
                   </strong>
                   <span className={`badge ${isCongested ? 'badge-amber' : 'badge-green'}`} style={{ fontSize: '0.62rem' }}>
-                    {isCongested ? 'Heavy Traffic' : 'Available Today'}
+                    {isCongested ? t.common.heavyTraffic : t.common.optimal}
                   </span>
                 </div>
 
@@ -160,24 +164,24 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
                   <MapPin size={13} color="var(--green-primary)" />
                   <span>{localizeCentreAddress(centre.address, currentLanguage)}</span>
                   <span style={{ color: 'var(--slate-300)' }}>•</span>
-                  <strong>{distanceText} away</strong>
+                  <strong>{distanceText} {currentLanguage === 'ta' ? 'தொலைவு' : currentLanguage === 'hi' ? 'दूरी' : 'away'}</strong>
                 </p>
               </div>
 
               {/* Status Metrics */}
               <div style={{ display: 'flex', gap: '20px', alignItems: 'center', fontSize: '0.82rem', flexWrap: 'wrap' }}>
                 <div>
-                  <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', fontWeight: 700 }}>Next Slot</span>
+                  <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', fontWeight: 700 }}>{t.farmer.arrivalWindow}</span>
                   <strong style={{ color: 'var(--text-dark)' }}>11:00 – 13:00</strong>
                 </div>
 
                 <div>
-                  <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', fontWeight: 700 }}>Est. Wait</span>
-                  <strong style={{ color: 'var(--text-dark)' }}>~42 min</strong>
+                  <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', fontWeight: 700 }}>{t.farmer.estimatedWait}</span>
+                  <strong style={{ color: 'var(--text-dark)' }}>~42 {t.farmer.minutes}</strong>
                 </div>
 
                 <div>
-                  <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', fontWeight: 700 }}>Capacity</span>
+                  <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', fontWeight: 700 }}>{currentLanguage === 'ta' ? 'கொள்ளளவு' : currentLanguage === 'hi' ? 'क्षमता' : 'Capacity'}</span>
                   <strong style={{ color: isCongested ? 'var(--amber-primary)' : 'var(--green-primary)' }}>
                     {isCongested ? '88%' : '72%'}
                   </strong>
@@ -191,7 +195,7 @@ export const FarmerDiscovery: React.FC<FarmerDiscoveryProps> = ({
                   className="btn btn-secondary"
                   style={{ padding: '7px 14px', fontSize: '0.82rem', fontWeight: 700 }}
                 >
-                  <span>View Slots</span>
+                  <span>{currentLanguage === 'ta' ? 'இடங்களை காண்க' : currentLanguage === 'hi' ? 'स्लॉट देखें' : 'View Slots'}</span>
                   <ArrowRight size={14} />
                 </button>
               </div>

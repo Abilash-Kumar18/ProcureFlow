@@ -27,36 +27,44 @@ export const FarmerBookingHistory: React.FC<FarmerBookingHistoryProps> = ({
   });
 
   return (
-    <div className="app-container" style={{ padding: '24px 20px 60px' }}>
+    <div className="app-container" style={{ padding: '24px 24px 60px' }}>
       
       {/* Header */}
       <div style={{ marginBottom: '20px' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-dark)' }}>
-          My Bookings
+          {t.farmer.nav?.bookings || 'My Bookings'}
         </h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
-          View upcoming procurement appointments, digital receipts, and booking status.
+          {currentLanguage === 'ta'
+            ? 'வரவிருக்கும் கொள்முதல் நியமனங்கள், டிஜிட்டல் ரசீதுகள் மற்றும் முன்பதிவு நிலையை காண்க.'
+            : currentLanguage === 'hi'
+            ? 'आगामी खरीद नियुक्तियों, डिजिटल रसीदों और बुकिंग स्थिति को देखें।'
+            : 'View upcoming procurement appointments, digital receipts, and booking status.'}
         </p>
       </div>
 
       {/* Tabs */}
       <div style={{ display: 'flex', gap: '6px', marginBottom: '16px' }}>
-        {['UPCOMING', 'COMPLETED', 'CANCELLED'].map((tab) => (
+        {[
+          { id: 'UPCOMING', label: currentLanguage === 'ta' ? 'வரவிருக்கும் முன்பதிவுகள்' : currentLanguage === 'hi' ? 'आगामी बुकिंग' : 'Upcoming Bookings' },
+          { id: 'COMPLETED', label: currentLanguage === 'ta' ? 'முடிந்தவை & ரசீதுகள்' : currentLanguage === 'hi' ? 'पूर्ण रसीदें' : 'Completed Receipts' },
+          { id: 'CANCELLED', label: currentLanguage === 'ta' ? 'ரத்து செய்யப்பட்டவை' : currentLanguage === 'hi' ? 'रद्द' : 'Cancelled' }
+        ].map((tab) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab as any)}
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
             style={{
-              background: activeTab === tab ? 'var(--green-primary)' : 'white',
-              color: activeTab === tab ? 'white' : 'var(--text-muted)',
+              background: activeTab === tab.id ? 'var(--green-primary)' : 'white',
+              color: activeTab === tab.id ? 'white' : 'var(--text-muted)',
               border: '1px solid var(--slate-300)',
               borderRadius: '6px',
               padding: '6px 14px',
               fontSize: '0.8rem',
-              fontWeight: activeTab === tab ? 700 : 500,
+              fontWeight: activeTab === tab.id ? 700 : 500,
               cursor: 'pointer'
             }}
           >
-            {tab === 'UPCOMING' ? 'Upcoming Bookings' : tab === 'COMPLETED' ? 'Completed Receipts' : 'Cancelled'}
+            {tab.label}
           </button>
         ))}
       </div>
@@ -86,14 +94,14 @@ export const FarmerBookingHistory: React.FC<FarmerBookingHistoryProps> = ({
               <div style={{ display: 'flex', gap: '8px' }}>
                 {b.queue_state === 'WAITING' || b.queue_state === 'BOOKED' ? (
                   <button onClick={onTrackQueue} className="btn btn-primary" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
-                    <span>Track Live Queue</span>
+                    <span>{t.farmer.trackLiveQueue}</span>
                   </button>
                 ) : null}
 
                 {b.receipt_ref && (
                   <button onClick={() => onViewReceipt(b.receipt_ref)} className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
                     <FileText size={14} />
-                    <span>Receipt ({b.receipt_ref})</span>
+                    <span>{currentLanguage === 'ta' ? 'ரசீது' : currentLanguage === 'hi' ? 'रसीद' : 'Receipt'} ({b.receipt_ref})</span>
                   </button>
                 )}
               </div>
@@ -101,7 +109,7 @@ export const FarmerBookingHistory: React.FC<FarmerBookingHistoryProps> = ({
           ))
         ) : (
           <div style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-            No bookings found in this category.
+            {currentLanguage === 'ta' ? 'இப்பிரிவில் முன்பதிவு ஏதுமில்லை.' : currentLanguage === 'hi' ? 'इस श्रेणी में कोई बुकिंग नहीं मिली।' : 'No bookings found in this category.'}
           </div>
         )}
       </div>

@@ -26,25 +26,29 @@ export const FarmerNotifications: React.FC<FarmerNotificationsProps> = ({
   });
 
   return (
-    <div className="app-container" style={{ padding: '24px 20px 60px' }}>
+    <div className="app-container" style={{ padding: '24px 24px 60px' }}>
       
       {/* Header */}
       <div style={{ marginBottom: '20px' }}>
         <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-dark)' }}>
-          Notifications & Alerts
+          {t.farmer.nav?.alerts || 'Notifications & Alerts'}
         </h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
-          Chronological procurement updates delivered via SMS and app notifications.
+          {currentLanguage === 'ta'
+            ? 'SMS மற்றும் செயலி மூலம் அனுப்பப்பட்ட கொள்முதல் அறிவிப்புகள்.'
+            : currentLanguage === 'hi'
+            ? 'एसएमएस और ऐप सूचनाओं के माध्यम से प्राप्त खरीद अपडेट।'
+            : 'Chronological procurement updates delivered via SMS and app notifications.'}
         </p>
       </div>
 
       {/* Category Filter Pills */}
       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
         {[
-          { id: 'ALL', label: 'All Alerts' },
-          { id: 'QUEUE', label: 'Queue & Call Alerts' },
-          { id: 'BOOKING', label: 'Bookings' },
-          { id: 'PAYMENT', label: 'DBT Payments' }
+          { id: 'ALL', label: currentLanguage === 'ta' ? 'அனைத்து அறிவிப்புகள்' : currentLanguage === 'hi' ? 'सभी अलर्ट' : 'All Alerts' },
+          { id: 'QUEUE', label: currentLanguage === 'ta' ? 'வரிசை & அழைப்பு' : currentLanguage === 'hi' ? 'कतार एवं कॉल अलर्ट' : 'Queue & Call Alerts' },
+          { id: 'BOOKING', label: currentLanguage === 'ta' ? 'முன்பதிவுகள்' : currentLanguage === 'hi' ? 'बुकिंग्स' : 'Bookings' },
+          { id: 'PAYMENT', label: currentLanguage === 'ta' ? 'DBT பணப்பரிமாற்றம்' : currentLanguage === 'hi' ? 'डीबीटी भुगतान' : 'DBT Payments' }
         ].map(cat => (
           <button
             key={cat.id}
@@ -83,7 +87,7 @@ export const FarmerNotifications: React.FC<FarmerNotificationsProps> = ({
             </p>
 
             <span style={{ fontSize: '0.7rem', color: 'var(--slate-400)', marginTop: '4px' }}>
-              Delivered to {(currentUser as any).mobile || '9876543210'} • 2026-09-07
+              {t.farmer.deliveredTo} {(currentUser as any).mobile || '9876543210'} • 2026-09-07
             </span>
           </div>
         ))}

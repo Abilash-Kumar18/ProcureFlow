@@ -67,12 +67,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Container */
+/* Container - Full width extension */
 .app-container {
   width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 20px;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 24px;
 }
 
 /* Digital Service Surface */
@@ -525,9 +525,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .auth-tab-btn.active-admin {
-  background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
   color: white;
-  box-shadow: 0 6px 18px rgba(67, 56, 202, 0.35);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35);
 }
 
 .otp-box {

@@ -199,7 +199,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({
   return (
     <div
       style={{
-        minHeight: '100vh',
+        height: '100vh',
+        maxHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         background: 'linear-gradient(135deg, #09131d 0%, #064e3b 45%, #051b14 100%)',
@@ -214,9 +215,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
           position: 'absolute',
           top: '-150px',
           right: '-150px',
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, transparent 70%)',
+          width: '450px',
+          height: '450px',
+          background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%)',
           borderRadius: '50%',
           pointerEvents: 'none'
         }}
@@ -226,9 +227,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
           position: 'absolute',
           bottom: '-120px',
           left: '-120px',
-          width: '450px',
-          height: '450px',
-          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%)',
+          width: '400px',
+          height: '400px',
+          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%)',
           borderRadius: '50%',
           pointerEvents: 'none'
         }}
@@ -237,7 +238,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       {/* Top Navbar */}
       <header
         style={{
-          padding: '16px 24px',
+          padding: '10px 24px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -253,25 +254,25 @@ export const AuthPage: React.FC<AuthPageProps> = ({
             title="Click to replay logo intro"
             style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
           >
-            <ProcureFlowLogo size={36} showText={false} animated={true} />
-            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '0.05em' }}>
+            <ProcureFlowLogo size={34} showText={false} animated={false} />
+            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.15rem', letterSpacing: '0.05em' }}>
               PROCURE<span style={{ color: '#34d399' }}>FLOW</span>
             </span>
           </div>
         </div>
 
-        {/* Language Controls (English & Tamil) */}
+        {/* Language Controls (English, Tamil, Hindi) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.12)', padding: '3px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.12)', padding: '2px', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
             <button
               onClick={() => onSelectLanguage('en')}
               style={{
                 background: currentLanguage === 'en' ? 'white' : 'transparent',
                 color: currentLanguage === 'en' ? '#0f172a' : '#cbd5e1',
                 border: 'none',
-                borderRadius: '9px',
-                padding: '6px 14px',
-                fontSize: '0.82rem',
+                borderRadius: '8px',
+                padding: '4px 12px',
+                fontSize: '0.78rem',
                 fontWeight: 700,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
@@ -286,9 +287,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 background: currentLanguage === 'ta' ? 'white' : 'transparent',
                 color: currentLanguage === 'ta' ? '#0f172a' : '#cbd5e1',
                 border: 'none',
-                borderRadius: '9px',
-                padding: '6px 14px',
-                fontSize: '0.82rem',
+                borderRadius: '8px',
+                padding: '4px 12px',
+                fontSize: '0.78rem',
                 fontWeight: 700,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
@@ -303,9 +304,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 background: currentLanguage === 'hi' ? 'white' : 'transparent',
                 color: currentLanguage === 'hi' ? '#0f172a' : '#cbd5e1',
                 border: 'none',
-                borderRadius: '9px',
-                padding: '6px 12px',
-                fontSize: '0.82rem',
+                borderRadius: '8px',
+                padding: '4px 12px',
+                fontSize: '0.78rem',
                 fontWeight: 700,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
@@ -327,27 +328,28 @@ export const AuthPage: React.FC<AuthPageProps> = ({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '36px 16px',
-          zIndex: 10
+          padding: '12px 16px',
+          zIndex: 10,
+          overflow: 'hidden'
         }}
       >
-        <div style={{ width: '100%', maxWidth: '480px' }}>
+        <div style={{ width: '100%', maxWidth: '440px' }}>
           {/* Brand Logo & Header Center */}
-          <div style={{ textAlign: 'center', marginBottom: '22px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '14px' }}>
             <div
               onClick={onReplaySplash}
               style={{ cursor: 'pointer', display: 'inline-block' }}
               title="Click to replay logo animation"
             >
-              <ProcureFlowLogo size={110} animated={true} textColor="#ffffff" />
+              <ProcureFlowLogo size={76} animated={false} textColor="#ffffff" />
             </div>
             <h1
               style={{
                 color: 'white',
-                fontSize: '1.6rem',
+                fontSize: '1.35rem',
                 fontWeight: 800,
                 letterSpacing: '-0.02em',
-                marginTop: '8px'
+                marginTop: '4px'
               }}
             >
               {a.portalTitle}
@@ -355,17 +357,17 @@ export const AuthPage: React.FC<AuthPageProps> = ({
           </div>
 
           {/* Authentication Card */}
-          <div className="auth-glass-card" style={{ padding: '28px 32px' }}>
+          <div className="auth-glass-card" style={{ padding: '22px 26px', borderRadius: '22px' }}>
             {/* Role Switcher Tabs (Farmer & Admin Only) */}
             <div
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
-                gap: '8px',
+                gap: '6px',
                 background: '#f1f5f9',
-                padding: '5px',
-                borderRadius: '16px',
-                marginBottom: '22px',
+                padding: '4px',
+                borderRadius: '14px',
+                marginBottom: '16px',
                 border: '1px solid #e2e8f0'
               }}
             >
@@ -373,9 +375,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 type="button"
                 onClick={() => { setAuthRole('FARMER'); setErrorMessage(null); }}
                 className={`auth-tab-btn ${authRole === 'FARMER' ? 'active-farmer' : ''}`}
-                style={{ fontSize: '0.9rem', padding: '11px 8px' }}
+                style={{ fontSize: '0.86rem', padding: '9px 8px' }}
               >
-                <Sprout size={18} />
+                <Sprout size={16} />
                 <span>{a.farmerLoginTab}</span>
               </button>
 
@@ -383,9 +385,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 type="button"
                 onClick={() => { setAuthRole('ADMIN'); setErrorMessage(null); }}
                 className={`auth-tab-btn ${authRole === 'ADMIN' ? 'active-admin' : ''}`}
-                style={{ fontSize: '0.9rem', padding: '11px 8px' }}
+                style={{ fontSize: '0.86rem', padding: '9px 8px' }}
               >
-                <Landmark size={18} />
+                <Landmark size={16} />
                 <span>{a.adminLoginTab}</span>
               </button>
             </div>
@@ -397,16 +399,16 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   background: '#fef2f2',
                   border: '1px solid #fecaca',
                   color: '#b91c1c',
-                  padding: '10px 14px',
+                  padding: '8px 12px',
                   borderRadius: '10px',
-                  fontSize: '0.85rem',
-                  marginBottom: '18px',
+                  fontSize: '0.8rem',
+                  marginBottom: '14px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px'
                 }}
               >
-                <AlertCircle size={17} />
+                <AlertCircle size={15} />
                 <span>{errorMessage}</span>
               </div>
             )}
@@ -415,13 +417,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({
             {authRole === 'FARMER' && (
               <form onSubmit={handleFarmerLogin}>
                 {/* Farmer Name / Username */}
-                <div style={{ marginBottom: '14px' }}>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
+                <div style={{ marginBottom: '10px' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '4px' }}>
                     {a.farmerNameLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                    <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
-                      <UserIcon size={18} />
+                    <div style={{ position: 'absolute', left: '12px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
+                      <UserIcon size={16} />
                     </div>
                     <input
                       type="text"
@@ -431,10 +433,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                       required
                       style={{
                         width: '100%',
-                        padding: '12px 14px 12px 42px',
-                        borderRadius: '12px',
+                        padding: '10px 12px 10px 38px',
+                        borderRadius: '10px',
                         border: '1.5px solid var(--slate-200)',
-                        fontSize: '0.95rem',
+                        fontSize: '0.9rem',
                         fontWeight: 600
                       }}
                     />
@@ -442,13 +444,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 </div>
 
                 {/* Mobile Number with Strict Numeric Validation */}
-                <div style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
+                <div style={{ marginBottom: '12px' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '4px' }}>
                     {a.mobileLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                    <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
-                      <Smartphone size={18} />
+                    <div style={{ position: 'absolute', left: '12px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
+                      <Smartphone size={16} />
                     </div>
                     <input
                       type="tel"
@@ -461,16 +463,16 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                       required
                       style={{
                         width: '100%',
-                        padding: '12px 14px 12px 42px',
-                        borderRadius: '12px',
+                        padding: '10px 12px 10px 38px',
+                        borderRadius: '10px',
                         border: '1.5px solid var(--slate-200)',
-                        fontSize: '0.95rem',
+                        fontSize: '0.9rem',
                         fontWeight: 600,
                         fontFamily: "'JetBrains Mono', monospace"
                       }}
                     />
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px', fontSize: '0.75rem', color: 'var(--slate-500)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '3px', fontSize: '0.72rem', color: 'var(--slate-500)' }}>
                     <span>{a.mobileHelper}</span>
                     <span style={{ fontWeight: 700, color: mobileNumber.length === 10 ? 'var(--emerald-600)' : 'var(--slate-400)' }}>
                       {mobileNumber.length}/10
@@ -479,13 +481,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 </div>
 
                 {/* 4-Digit OTP Input */}
-                <div style={{ marginBottom: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)' }}>
+                <div style={{ marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-700)' }}>
                       {a.otpLabel}
                     </label>
                   </div>
-                  <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                     {otpCode.map((digit, index) => (
                       <input
                         key={index}
@@ -498,6 +500,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(index, e)}
                         className="otp-box"
+                        style={{ width: '48px', height: '50px', fontSize: '1.4rem' }}
                       />
                     ))}
                   </div>
@@ -507,14 +510,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   type="submit"
                   disabled={isLoading}
                   className="btn btn-primary"
-                  style={{ width: '100%', padding: '14px', fontSize: '1rem' }}
+                  style={{ width: '100%', padding: '12px', fontSize: '0.95rem' }}
                 >
                   {isLoading ? (
                     <span>{a.verifyingBtn}</span>
                   ) : (
                     <>
                       <span>{a.farmerSubmitBtn}</span>
-                      <ArrowRight size={18} />
+                      <ArrowRight size={16} />
                     </>
                   )}
                 </button>
@@ -525,13 +528,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({
             {authRole === 'ADMIN' && (
               <form onSubmit={handleAdminLogin} autoComplete="off">
                 {/* Official Email Input */}
-                <div style={{ marginBottom: '14px' }}>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
+                <div style={{ marginBottom: '10px' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '4px' }}>
                     {a.adminEmailLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                    <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
-                      <Mail size={18} />
+                    <div style={{ position: 'absolute', left: '12px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
+                      <Mail size={16} />
                     </div>
                     <input
                       type="email"
@@ -544,10 +547,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                       required
                       style={{
                         width: '100%',
-                        padding: '12px 14px 12px 42px',
-                        borderRadius: '12px',
+                        padding: '10px 12px 10px 38px',
+                        borderRadius: '10px',
                         border: '1.5px solid var(--slate-200)',
-                        fontSize: '0.92rem',
+                        fontSize: '0.88rem',
                         fontWeight: 600
                       }}
                     />
@@ -555,13 +558,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 </div>
 
                 {/* Password Input with Strict Validation */}
-                <div style={{ marginBottom: '12px' }}>
-                  <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '6px' }}>
+                <div style={{ marginBottom: '10px' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-700)', marginBottom: '4px' }}>
                     {a.adminPasswordLabel}
                   </label>
                   <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                    <div style={{ position: 'absolute', left: '14px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
-                      <Lock size={18} />
+                    <div style={{ position: 'absolute', left: '12px', color: 'var(--slate-400)', display: 'flex', alignItems: 'center' }}>
+                      <Lock size={16} />
                     </div>
                     <input
                       type={showPassword ? 'text' : 'password'}
@@ -574,10 +577,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                       required
                       style={{
                         width: '100%',
-                        padding: '12px 42px 12px 42px',
-                        borderRadius: '12px',
+                        padding: '10px 38px 10px 38px',
+                        borderRadius: '10px',
                         border: '1.5px solid var(--slate-200)',
-                        fontSize: '0.95rem',
+                        fontSize: '0.9rem',
                         fontFamily: showPassword ? 'inherit' : "'JetBrains Mono', monospace"
                       }}
                     />
@@ -595,7 +598,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                         alignItems: 'center'
                       }}
                     >
-                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
                 </div>
@@ -605,32 +608,32 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   style={{
                     background: '#f8fafc',
                     border: '1px solid #e2e8f0',
-                    borderRadius: '12px',
-                    padding: '10px 14px',
-                    marginBottom: '20px',
-                    fontSize: '0.76rem',
+                    borderRadius: '10px',
+                    padding: '8px 12px',
+                    marginBottom: '16px',
+                    fontSize: '0.74rem',
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
-                    gap: '6px'
+                    gap: '5px'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasCapitalLetter ? '#15803d' : 'var(--slate-500)', fontWeight: hasCapitalLetter ? 700 : 500 }}>
-                    {hasCapitalLetter ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: hasCapitalLetter ? '#15803d' : 'var(--slate-500)', fontWeight: hasCapitalLetter ? 700 : 500 }}>
+                    {hasCapitalLetter ? <CheckCircle2 size={12} color="#16a34a" /> : <XCircle size={12} color="#94a3b8" />}
                     <span>{a.reqCapital}</span>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasSpecialChar ? '#15803d' : 'var(--slate-500)', fontWeight: hasSpecialChar ? 700 : 500 }}>
-                    {hasSpecialChar ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: hasSpecialChar ? '#15803d' : 'var(--slate-500)', fontWeight: hasSpecialChar ? 700 : 500 }}>
+                    {hasSpecialChar ? <CheckCircle2 size={12} color="#16a34a" /> : <XCircle size={12} color="#94a3b8" />}
                     <span>{a.reqSpecial}</span>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasNumber ? '#15803d' : 'var(--slate-500)', fontWeight: hasNumber ? 700 : 500 }}>
-                    {hasNumber ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: hasNumber ? '#15803d' : 'var(--slate-500)', fontWeight: hasNumber ? 700 : 500 }}>
+                    {hasNumber ? <CheckCircle2 size={12} color="#16a34a" /> : <XCircle size={12} color="#94a3b8" />}
                     <span>{a.reqNumber}</span>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: hasAlphabet ? '#15803d' : 'var(--slate-500)', fontWeight: hasAlphabet ? 700 : 500 }}>
-                    {hasAlphabet ? <CheckCircle2 size={13} color="#16a34a" /> : <XCircle size={13} color="#94a3b8" />}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: hasAlphabet ? '#15803d' : 'var(--slate-500)', fontWeight: hasAlphabet ? 700 : 500 }}>
+                    {hasAlphabet ? <CheckCircle2 size={12} color="#16a34a" /> : <XCircle size={12} color="#94a3b8" />}
                     <span>{a.reqAlphabet}</span>
                   </div>
                 </div>
@@ -638,14 +641,11 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="btn"
+                  className="btn btn-primary"
                   style={{
                     width: '100%',
-                    padding: '14px',
-                    fontSize: '1rem',
-                    background: 'linear-gradient(135deg, #4338ca 0%, #3730a3 100%)',
-                    color: 'white',
-                    boxShadow: '0 4px 14px rgba(67, 56, 202, 0.35)'
+                    padding: '12px',
+                    fontSize: '0.95rem'
                   }}
                 >
                   {isLoading ? a.authenticatingBtn : a.adminSubmitBtn}

@@ -221,19 +221,19 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
       {/* INTEGRATED SINGLE HORIZONTAL FARMER NAVIGATION BAR */}
-      <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid var(--border-light)', padding: '0' }}>
-        <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+      <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid var(--border-light)', padding: '8px 0' }}>
+        <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '14px' }}>
           
-          <div style={{ display: 'flex', gap: '2px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
             {[
-              { id: 'JOURNEY_HOME', label: 'Home', icon: Home },
-              { id: 'DISCOVERY', label: 'Find Centre', icon: Search },
-              { id: 'HISTORY', label: 'Bookings', icon: Calendar },
-              { id: 'LIVE_QUEUE', label: 'Live Queue', icon: Radio, isLive: true },
-              { id: 'TIMELINE', label: 'Procurement', icon: FileText },
-              { id: 'PAYMENTS', label: 'Payments', icon: CreditCard },
-              { id: 'NOTIFICATIONS', label: 'Alerts', icon: Bell },
-              { id: 'PROFILE', label: 'Profile', icon: UserIcon }
+              { id: 'JOURNEY_HOME', label: t.farmer.nav?.home || 'Home', icon: Home },
+              { id: 'DISCOVERY', label: t.farmer.nav?.findCentre || 'Find Centre', icon: Search },
+              { id: 'HISTORY', label: t.farmer.nav?.bookings || 'Bookings', icon: Calendar },
+              { id: 'LIVE_QUEUE', label: t.farmer.nav?.liveQueue || 'Live Queue', icon: Radio, isLive: true },
+              { id: 'TIMELINE', label: t.farmer.nav?.procurement || 'Procurement', icon: FileText },
+              { id: 'PAYMENTS', label: t.farmer.nav?.payments || 'Payments', icon: CreditCard },
+              { id: 'NOTIFICATIONS', label: t.farmer.nav?.alerts || 'Alerts', icon: Bell },
+              { id: 'PROFILE', label: t.farmer.nav?.profile || 'Profile', icon: UserIcon }
             ].map(navItem => {
               const Icon = navItem.icon;
               const isActive = currentView === navItem.id;
@@ -243,15 +243,15 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                   key={navItem.id}
                   onClick={() => setCurrentView(navItem.id as FarmerView)}
                   style={{
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    padding: '12px 16px',
-                    border: 'none',
+                    gap: '7px',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: isActive ? '1.5px solid var(--green-primary)' : '1.5px solid transparent',
                     background: isActive ? 'var(--mint-soft)' : 'transparent',
                     color: isActive ? 'var(--green-primary)' : 'var(--text-muted)',
-                    borderBottom: isActive ? '2.5px solid var(--green-primary)' : '2.5px solid transparent',
-                    fontWeight: isActive ? 700 : 500,
+                    fontWeight: isActive ? 700 : 600,
                     fontSize: '0.85rem',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease'
@@ -270,8 +270,8 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             })}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600, padding: '8px 0' }}>
-            <span>Thanjavur Zone • Kharif 2026</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600, padding: '4px 0' }}>
+            <span>{t.farmer.nav?.zoneTag || 'Thanjavur Zone • Kharif 2026'}</span>
           </div>
 
         </div>
@@ -360,15 +360,15 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
 
         {/* MAIN FARMER ACTION HOME */}
         {currentView === 'JOURNEY_HOME' && (
-          <div className="app-container" style={{ padding: '24px 20px 60px' }}>
+          <div className="app-container" style={{ padding: '24px 24px 60px' }}>
             
             {/* HERO GREETING */}
             <div style={{ marginBottom: '24px' }}>
               <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-dark)', lineHeight: 1.2 }}>
-                Good morning, {currentUser.name.split(' ')[0]}
+                {t.farmer.greeting || 'Good morning,'} {currentUser.name.split(' ')[0]}
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '2px' }}>
-                Manage your procurement journey from booking to direct bank payment.
+                {t.farmer.greetingSub || 'Manage your procurement journey from booking to direct bank payment.'}
               </p>
             </div>
 
@@ -377,7 +377,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               <div className="service-surface" style={{ padding: '28px', marginBottom: '24px', background: 'white' }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px' }}>
                   <div>
-                    <span className="badge badge-green" style={{ marginBottom: '6px' }}>YOUR NEXT PROCUREMENT</span>
+                    <span className="badge badge-green" style={{ marginBottom: '6px' }}>{t.farmer.nextProcurement || 'YOUR NEXT PROCUREMENT'}</span>
                     <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-dark)' }}>
                       {localizeCentreName(activeBooking.centre_name, currentLanguage)}
                     </h3>
@@ -386,20 +386,20 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                       <span>{localizeCentreAddress(activeBooking.centre_address, currentLanguage)}</span>
                     </p>
                     <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-dark)', marginTop: '8px' }}>
-                      Date: {activeBooking.service_date} • Arrival: {activeBooking.slot_start_time} – {activeBooking.slot_end_time}
+                      {t.farmer.datePrefix || 'Date:'} {activeBooking.service_date} • {t.farmer.arrivalPrefix || 'Arrival:'} {activeBooking.slot_start_time} – {activeBooking.slot_end_time}
                     </div>
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>Virtual Token</span>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>{t.farmer.tokenNumber || 'Virtual Token'}</span>
                     <div className="mono" style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--green-primary)', lineHeight: 1 }}>
                       {activeBooking.token_no}
                     </div>
                     <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-dark)', marginTop: '4px' }}>
-                      {peopleAhead} farmers ahead • ~{activeBooking.eta_minutes ?? 20} min wait
+                      {peopleAhead} {t.farmer.peopleAhead} • ~{activeBooking.eta_minutes ?? 20} {t.farmer.minutes}
                     </div>
                     <span className="badge badge-amber" style={{ marginTop: '4px' }}>
-                      Status: {localizeStatus(activeBooking.queue_state, currentLanguage)}
+                      {t.common.status}: {localizeStatus(activeBooking.queue_state, currentLanguage)}
                     </span>
                   </div>
                 </div>
@@ -408,10 +408,10 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 <div style={{ display: 'flex', gap: '10px', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid var(--border-subtle)' }}>
                   <button onClick={() => setCurrentView('LIVE_QUEUE')} className="btn btn-primary" style={{ padding: '10px 20px', fontWeight: 700 }}>
                     <Radio size={16} />
-                    <span>Track Live Queue</span>
+                    <span>{t.farmer.trackLiveQueue || 'Track Live Queue'}</span>
                   </button>
                   <button onClick={() => setCurrentView('HISTORY')} className="btn btn-secondary" style={{ padding: '10px 18px' }}>
-                    <span>View Booking Details</span>
+                    <span>{t.farmer.viewBookingDetails || 'View Booking Details'}</span>
                   </button>
                 </div>
               </div>
@@ -421,29 +421,29 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '28px' }}>
               <button onClick={() => handleOpenBookingModal()} className="btn btn-secondary" style={{ flex: 1, minWidth: '160px', justifyContent: 'flex-start', padding: '12px 16px' }}>
                 <Calendar size={18} color="var(--green-primary)" />
-                <span style={{ fontWeight: 700 }}>Book a Slot</span>
+                <span style={{ fontWeight: 700 }}>{t.farmer.quickActions?.bookSlot || 'Book a Slot'}</span>
               </button>
 
               <button onClick={() => setCurrentView('DISCOVERY')} className="btn btn-secondary" style={{ flex: 1, minWidth: '160px', justifyContent: 'flex-start', padding: '12px 16px' }}>
                 <Search size={18} color="var(--green-primary)" />
-                <span style={{ fontWeight: 700 }}>Find a Centre</span>
+                <span style={{ fontWeight: 700 }}>{t.farmer.quickActions?.findCentre || 'Find a Centre'}</span>
               </button>
 
               <button onClick={() => setCurrentView('HISTORY')} className="btn btn-secondary" style={{ flex: 1, minWidth: '160px', justifyContent: 'flex-start', padding: '12px 16px' }}>
                 <FileText size={18} color="var(--green-primary)" />
-                <span style={{ fontWeight: 700 }}>My Bookings</span>
+                <span style={{ fontWeight: 700 }}>{t.farmer.quickActions?.myBookings || 'My Bookings'}</span>
               </button>
 
               <button onClick={() => setCurrentView('TIMELINE')} className="btn btn-secondary" style={{ flex: 1, minWidth: '160px', justifyContent: 'flex-start', padding: '12px 16px' }}>
                 <CreditCard size={18} color="var(--green-primary)" />
-                <span style={{ fontWeight: 700 }}>Track Procurement & Payment</span>
+                <span style={{ fontWeight: 700 }}>{t.farmer.quickActions?.trackProcPayment || 'Track Procurement & Payment'}</span>
               </button>
             </div>
 
             {/* ONE MAJOR CONNECTED PROGRESS JOURNEY LINE */}
             <div className="service-surface" style={{ padding: '24px', marginBottom: '28px' }}>
               <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-dark)', marginBottom: '14px' }}>
-                Current Procurement Journey Progress
+                {t.farmer.journeyProgressTitle || 'Current Procurement Journey Progress'}
               </h3>
 
               <div className="journey-line-container">
@@ -451,32 +451,32 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
 
                 <div className="journey-step-node completed">
                   <div className="journey-step-circle">✓</div>
-                  <span className="journey-step-label">BOOKED</span>
+                  <span className="journey-step-label">{t.farmer.journeySteps?.booked || 'BOOKED'}</span>
                 </div>
 
                 <div className="journey-step-node completed">
                   <div className="journey-step-circle">✓</div>
-                  <span className="journey-step-label">TOKEN</span>
+                  <span className="journey-step-label">{t.farmer.journeySteps?.token || 'TOKEN'}</span>
                 </div>
 
                 <div className="journey-step-node completed">
                   <div className="journey-step-circle">✓</div>
-                  <span className="journey-step-label">ARRIVED</span>
+                  <span className="journey-step-label">{t.farmer.journeySteps?.arrived || 'ARRIVED'}</span>
                 </div>
 
                 <div className="journey-step-node active">
                   <div className="journey-step-circle">●</div>
-                  <span className="journey-step-label">QUEUE (Current)</span>
+                  <span className="journey-step-label">{t.farmer.journeySteps?.queueCurrent || 'QUEUE (Current)'}</span>
                 </div>
 
                 <div className="journey-step-node">
                   <div className="journey-step-circle">5</div>
-                  <span className="journey-step-label">PROCUREMENT</span>
+                  <span className="journey-step-label">{t.farmer.journeySteps?.procurement || 'PROCUREMENT'}</span>
                 </div>
 
                 <div className="journey-step-node">
                   <div className="journey-step-circle">6</div>
-                  <span className="journey-step-label">PAYMENT</span>
+                  <span className="journey-step-label">{t.farmer.journeySteps?.payment || 'PAYMENT'}</span>
                 </div>
               </div>
             </div>
@@ -484,9 +484,9 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {/* RECENT ALERTS LIST ROWS */}
             <div className="service-surface">
               <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <strong style={{ fontSize: '0.95rem', color: 'var(--text-dark)' }}>Recent Alerts & Notifications</strong>
+                <strong style={{ fontSize: '0.95rem', color: 'var(--text-dark)' }}>{t.farmer.recentAlertsTitle || 'Recent Alerts & Notifications'}</strong>
                 <button onClick={() => setCurrentView('NOTIFICATIONS')} style={{ background: 'none', border: 'none', color: 'var(--green-primary)', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer' }}>
-                  View All Notifications →
+                  {t.farmer.viewAllNotifications || 'View All Notifications →'}
                 </button>
               </div>
 
@@ -502,58 +502,13 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
         )}
       </div>
 
-      {/* MOBILE BOTTOM NAVIGATION */}
-      <div className="no-print" style={{
-        position: 'sticky',
-        bottom: 0,
-        zIndex: 100,
-        background: 'white',
-        borderTop: '1px solid var(--border-light)',
-        padding: '6px 0'
-      }}>
-        <div className="app-container" style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-          {[
-            { id: 'JOURNEY_HOME', label: 'Home', icon: Home },
-            { id: 'DISCOVERY', label: 'Centres', icon: Search },
-            { id: 'HISTORY', label: 'Bookings', icon: Calendar },
-            { id: 'LIVE_QUEUE', label: 'Queue', icon: Radio },
-            { id: 'TIMELINE', label: 'More', icon: FileText }
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const isActive = currentView === tab.id;
-
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setCurrentView(tab.id as FarmerView)}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '2px',
-                  border: 'none',
-                  background: 'transparent',
-                  color: isActive ? 'var(--green-primary)' : 'var(--text-muted)',
-                  fontWeight: isActive ? 700 : 500,
-                  fontSize: '0.72rem',
-                  cursor: 'pointer',
-                  padding: '4px 10px'
-                }}
-              >
-                <Icon size={18} color={isActive ? 'var(--green-primary)' : 'var(--text-muted)'} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
       {/* BOOKING MODAL */}
       {showBookingModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(16, 32, 26, 0.5)', backdropFilter: 'blur(3px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '16px' }}>
           <div className="service-surface" style={{ background: 'white', maxWidth: '600px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '24px', borderRadius: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px' }}>
-              <h3 style={{ fontSize: '1.2rem', color: 'var(--text-dark)', fontWeight: 800 }}>Reserve Procurement Slot</h3>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--text-dark)', fontWeight: 800 }}>{t.farmer.bookingModal?.title || 'Reserve Procurement Slot'}</h3>
               <button onClick={() => setShowBookingModal(false)} style={{ background: 'none', border: 'none', fontSize: '1.4rem', cursor: 'pointer', color: 'var(--text-muted)' }}>&times;</button>
             </div>
 
@@ -565,7 +520,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
 
             <div style={{ marginBottom: '14px' }}>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '6px', color: 'var(--text-dark)' }}>
-                Select Procurement Centre
+                {t.farmer.bookingModal?.step1 || 'Select Procurement Centre'}
               </label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {centres.map((c) => (
@@ -590,7 +545,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {slotWindows.length > 0 && (
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '6px', color: 'var(--text-dark)' }}>
-                  Select Arrival Window
+                  {t.farmer.bookingModal?.step2 || 'Select Arrival Window'}
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '8px' }}>
                   {slotWindows.map((slot) => {
@@ -616,7 +571,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                           {slot.start_time} - {slot.end_time}
                         </strong>
                         <span style={{ fontSize: '0.68rem', color: isFull ? 'var(--red-primary)' : 'var(--green-primary)' }}>
-                          {isFull ? 'FULL' : `${slot.booked_farmer_count}/${slot.capacity_farmer_count} slots`}
+                          {isFull ? (t.farmer.bookingModal?.capacityFull || 'FULL') : `${slot.booked_farmer_count}/${slot.capacity_farmer_count} ${t.farmer.bookingModal?.slots || 'slots'}`}
                         </span>
                       </button>
                     );
@@ -627,7 +582,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
 
             <div style={{ marginBottom: '18px' }}>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '4px', color: 'var(--text-dark)' }}>
-                Expected Quantity (Quintals)
+                {t.farmer.bookingModal?.step3 || 'Expected Quantity (Quintals)'}
               </label>
               <input
                 type="number"
@@ -649,7 +604,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
               <button onClick={() => setShowBookingModal(false)} className="btn btn-secondary">
-                Cancel
+                {t.common.cancel}
               </button>
               <button
                 onClick={handleSubmitBooking}
@@ -657,7 +612,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 className="btn btn-primary"
                 style={{ padding: '9px 20px', fontWeight: 700 }}
               >
-                {isSubmittingBooking ? 'Securing...' : 'Confirm Booking'}
+                {isSubmittingBooking ? (t.farmer.bookingModal?.securingSlot || 'Securing...') : (t.farmer.bookingModal?.confirmButton || 'Confirm Booking')}
               </button>
             </div>
           </div>
@@ -669,45 +624,45 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(16, 32, 26, 0.55)', backdropFilter: 'blur(3px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '16px' }}>
           <div className="service-surface" style={{ background: 'white', maxWidth: '540px', width: '100%', padding: '24px', borderRadius: '16px' }}>
             <div style={{ textAlign: 'center', borderBottom: '2px dashed var(--slate-300)', paddingBottom: '14px', marginBottom: '14px' }}>
-              <h2 style={{ fontSize: '1.25rem', color: 'var(--text-dark)', fontWeight: 800 }}>Procurement Receipt</h2>
+              <h2 style={{ fontSize: '1.25rem', color: 'var(--text-dark)', fontWeight: 800 }}>{t.farmer.receiptModal?.title || 'Procurement Receipt'}</h2>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '4px' }}>
-                <span className="mono" style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>REF: <strong>{selectedReceipt.receipt_ref}</strong></span>
-                <span className="mono" style={{ fontSize: '0.78rem', color: 'var(--green-primary)' }}>TOKEN: <strong>{selectedReceipt.token_no}</strong></span>
+                <span className="mono" style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t.farmer.receiptModal?.receiptLabel || 'REF:'} <strong>{selectedReceipt.receipt_ref}</strong></span>
+                <span className="mono" style={{ fontSize: '0.78rem', color: 'var(--green-primary)' }}>{t.farmer.receiptModal?.tokenLabel || 'TOKEN:'} <strong>{selectedReceipt.token_no}</strong></span>
               </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.8rem', marginBottom: '14px' }}>
-              <div><strong>Farmer:</strong> {selectedReceipt.farmer_name}</div>
-              <div><strong>Centre:</strong> {localizeCentreName(selectedReceipt.centre_name, currentLanguage)}</div>
-              <div><strong>Commodity:</strong> {localizeCommodity(selectedReceipt.commodity_name, currentLanguage)}</div>
-              <div><strong>Date:</strong> {selectedReceipt.recorded_at}</div>
+              <div><strong>{t.farmer.receiptModal?.farmerName || 'Farmer:'}</strong> {selectedReceipt.farmer_name}</div>
+              <div><strong>{t.farmer.receiptModal?.centreName || 'Centre:'}</strong> {localizeCentreName(selectedReceipt.centre_name, currentLanguage)}</div>
+              <div><strong>{t.farmer.receiptModal?.commodityVariety || 'Commodity:'}</strong> {localizeCommodity(selectedReceipt.commodity_name, currentLanguage)}</div>
+              <div><strong>{t.common.date}:</strong> {selectedReceipt.recorded_at}</div>
             </div>
 
             <div style={{ background: 'var(--bg-main)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-light)', marginBottom: '14px', fontSize: '0.82rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0' }}>
-                <span>Gross Weight</span>
-                <strong className="mono">{selectedReceipt.gross_weight_quintals} Qtl</strong>
+                <span>{t.farmer.receiptModal?.grossWeight || 'Gross Weight'}</span>
+                <strong className="mono">{selectedReceipt.gross_weight_quintals} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0' }}>
-                <span>Tare Weight</span>
-                <strong className="mono" style={{ color: 'var(--text-muted)' }}>- {selectedReceipt.tare_weight_quintals} Qtl</strong>
+                <span>{t.farmer.receiptModal?.tareWeight || 'Tare Weight'}</span>
+                <strong className="mono" style={{ color: 'var(--text-muted)' }}>- {selectedReceipt.tare_weight_quintals} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderTop: '1px solid var(--border-subtle)', marginTop: '4px' }}>
-                <span>Net Payable Quantity</span>
-                <strong className="mono" style={{ color: 'var(--green-primary)' }}>{selectedReceipt.final_payable_quantity} Qtl</strong>
+                <span>{t.farmer.receiptModal?.netQuantity || 'Net Payable Quantity'}</span>
+                <strong className="mono" style={{ color: 'var(--green-primary)' }}>{selectedReceipt.final_payable_quantity} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid var(--slate-300)', marginTop: '6px', paddingTop: '6px', fontSize: '1.1rem', color: 'var(--green-dark)' }}>
-                <strong>Net Payable Amount</strong>
+                <strong>{t.farmer.receiptModal?.netPayable || 'Net Payable Amount'}</strong>
                 <strong className="mono">₹{selectedReceipt.net_amount?.toLocaleString('en-IN')}</strong>
               </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }} className="no-print">
               <button onClick={() => window.print()} className="btn btn-secondary">
-                Print
+                {t.common.print}
               </button>
               <button onClick={() => setSelectedReceipt(null)} className="btn btn-primary">
-                Done
+                {t.common.done}
               </button>
             </div>
           </div>
