@@ -4,12 +4,16 @@ import { DemoHeader } from './components/common/DemoHeader';
 import { FarmerHome } from './components/farmer/FarmerHome';
 import { OperatorConsole } from './components/operator/OperatorConsole';
 import { AdminDashboard } from './components/admin/AdminDashboard';
+import { SplashScreen } from './components/splash/SplashScreen';
+import { AuthPage } from './components/auth/AuthPage';
 import { translations } from './i18n/translations';
 import confetti from 'canvas-confetti';
 
 export const App: React.FC = () => {
   const [personas, setPersonas] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isSplashing, setIsSplashing] = useState<boolean>(true);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en');
   const [activeTab, setActiveTab] = useState<'FARMER' | 'OPERATOR' | 'ADMIN'>('FARMER');
   const [isLiveConnected, setIsLiveConnected] = useState(false);
@@ -24,15 +28,6 @@ export const App: React.FC = () => {
         const data = await res.json();
         if (data.data && data.data.length > 0) {
           setPersonas(data.data);
-          setCurrentUser(prev => {
-            if (!prev) {
-              const ramesh = data.data.find((u: User) => u.name.includes('Ramesh')) || data.data[0];
-              setActiveTab(ramesh.role === 'DISTRICT_ADMIN' ? 'ADMIN' : ramesh.role as any);
-              return ramesh;
-            }
-            const match = data.data.find((u: User) => u.id === prev.id);
-            return match || prev;
-          });
         }
       } catch (err) {
         console.error('Failed to load personas:', err);
@@ -79,6 +74,28 @@ export const App: React.FC = () => {
     };
   }, []);
 
+  // Handle successful login from AuthPage
+  const handleLoginSuccess = (user: User) => {
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    setActiveTab(user.role === 'DISTRICT_ADMIN' ? 'ADMIN' : user.role as any);
+    if (user.preferred_language && ['en', 'hi', 'ta'].includes(user.preferred_language)) {
+      setCurrentLanguage(user.preferred_language as LanguageCode);
+    }
+    setRefreshKey(prev => prev + 1);
+  };
+
+  // Handle Logout to return to Auth Portal
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setIsAuthenticated(false);
+  };
+
+  // Replay splash screen
+  const handleReplaySplash = () => {
+    setIsSplashing(true);
+  };
+
   // Switch persona handler
   const handleSelectPersona = (userId: string) => {
     const selected = personas.find(p => p.id === userId);
@@ -108,6 +125,25 @@ export const App: React.FC = () => {
 
   const t = translations[currentLanguage];
 
+  // 1. Initial Animated Splash Screen
+  if (isSplashing) {
+    return <SplashScreen onComplete={() => setIsSplashing(false)} />;
+  }
+
+  // 2. Authentication Page (when not logged in)
+  if (!isAuthenticated || !currentUser) {
+    return (
+      <AuthPage
+        personas={personas}
+        onLoginSuccess={handleLoginSuccess}
+        currentLanguage={currentLanguage}
+        onSelectLanguage={setCurrentLanguage}
+        onReplaySplash={handleReplaySplash}
+      />
+    );
+  }
+
+  // 3. Authenticated Main Dashboard
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-main)' }}>
       {/* Top Header */}
@@ -118,6 +154,7 @@ export const App: React.FC = () => {
         currentLanguage={currentLanguage}
         onSelectLanguage={setCurrentLanguage}
         onResetData={handleResetData}
+        onLogout={handleLogout}
         isLiveConnected={isLiveConnected}
         isResetting={isResetting}
       />
@@ -254,4 +291,5 @@ export const App: React.FC = () => {
     </div>
   );
 };
+
 export default App;

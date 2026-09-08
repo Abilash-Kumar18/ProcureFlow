@@ -380,3 +380,174 @@ h1, h2, h3, h4, h5, h6 {
     background: white !important;
   }
 }
+
+/* ==========================================================================
+   ProcureFlow Logo Animations & Splash Screen Styling
+   ========================================================================== */
+
+.logo-animated {
+  animation: pf-float 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes pf-float {
+  0% {
+    transform: translateY(0px) scale(1);
+    filter: drop-shadow(0 10px 20px rgba(16, 185, 129, 0.2));
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+    filter: drop-shadow(0 20px 35px rgba(16, 185, 129, 0.45));
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+    filter: drop-shadow(0 10px 20px rgba(16, 185, 129, 0.2));
+  }
+}
+
+.pf-core-seeds {
+  animation: pf-seeds-breathe 2.8s ease-in-out infinite alternate;
+  transform-origin: 200px 240px;
+}
+
+@keyframes pf-seeds-breathe {
+  0% {
+    transform: scale(0.96) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1.04) rotate(2deg);
+  }
+}
+
+.pf-waves-anim {
+  animation: pf-wave-glide 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes pf-wave-glide {
+  0% {
+    transform: translateX(-3px) scaleY(0.95);
+  }
+  100% {
+    transform: translateX(3px) scaleY(1.05);
+  }
+}
+
+.pf-stem-anim {
+  animation: pf-stem-sway 3s ease-in-out infinite alternate;
+  transform-origin: 200px 105px;
+}
+
+@keyframes pf-stem-sway {
+  0% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Splash Screen Transitions */
+.splash-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #064e3b 0%, #09131d 55%, #050b12 100%);
+  overflow: hidden;
+  color: white;
+}
+
+.splash-particles {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(52, 211, 153, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.splash-progress-track {
+  width: 240px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 24px;
+}
+
+.splash-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #fbbf24 100%);
+  border-radius: 9999px;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+  transition: width 0.08s linear;
+}
+
+/* Auth Portal Custom Elements */
+.auth-glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 25px 60px -15px rgba(6, 78, 59, 0.18), 0 0 0 1px rgba(16, 185, 129, 0.08);
+  border-radius: 28px;
+}
+
+.auth-tab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--slate-600);
+  background: transparent;
+}
+
+.auth-tab-btn.active-farmer {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: white;
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35);
+}
+
+.auth-tab-btn.active-operator {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: white;
+  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.35);
+}
+
+.auth-tab-btn.active-admin {
+  background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+  color: white;
+  box-shadow: 0 6px 18px rgba(67, 56, 202, 0.35);
+}
+
+.otp-box {
+  width: 52px;
+  height: 58px;
+  border-radius: 14px;
+  border: 2px solid var(--slate-200);
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--slate-900);
+  background: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.otp-box:focus {
+  outline: none;
+  border-color: var(--emerald-500);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+

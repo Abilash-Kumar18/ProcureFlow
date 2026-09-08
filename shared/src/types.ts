@@ -40,6 +40,9 @@ export interface User {
   status: 'ACTIVE' | 'INACTIVE';
   district_id: string;
   centre_id?: string;
+  preferred_language?: LanguageCode;
+  farmer_ref?: string;
+  village?: string;
   created_at: string;
 }
 
