@@ -69,87 +69,14 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
           </div>
         </div>
 
-        {/* RIGHT CONTROLS: Portal Switcher, Demo Farmer Selector, Language Dropdown, Reset */}
+        {/* RIGHT CONTROLS: Demo Farmer Selector, Language Dropdown, Notifications, Profile, Reset */}
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px' }}>
           
-          {/* 1. PORTAL SWITCHER DROPDOWN */}
-          {onSelectTab && (
-            <div style={{ position: 'relative' }}>
-              <button
-                onClick={() => {
-                  setShowPortalMenu(!showPortalMenu);
-                  setShowFarmerMenu(false);
-                  setShowLangMenu(false);
-                }}
-                style={{
-                  background: 'rgba(0, 0, 0, 0.25)',
-                  color: 'white',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  borderRadius: '7px',
-                  padding: '6px 11px',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                <Layers size={14} color="#a7f3d0" />
-                <span>
-                  {activeTab === 'FARMER' ? 'Farmer Portal' : activeTab === 'OPERATOR' ? 'Centre Operator Console' : 'District Admin Dashboard'}
-                </span>
-                <ChevronDown size={13} color="#a7f3d0" />
-              </button>
-
-              {showPortalMenu && (
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  right: 0,
-                  marginTop: '4px',
-                  background: 'white',
-                  border: '1px solid var(--slate-200)',
-                  borderRadius: '8px',
-                  boxShadow: 'var(--shadow-hover)',
-                  width: '210px',
-                  zIndex: 100,
-                  overflow: 'hidden'
-                }}>
-                  <div
-                    onClick={() => { onSelectTab('FARMER'); setShowPortalMenu(false); }}
-                    style={{ padding: '9px 12px', fontSize: '0.8rem', cursor: 'pointer', color: 'var(--slate-900)', fontWeight: activeTab === 'FARMER' ? 700 : 500, background: activeTab === 'FARMER' ? 'var(--mint-soft)' : 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  >
-                    <span>Farmer Portal</span>
-                    {activeTab === 'FARMER' && <Check size={14} color="var(--green-primary)" />}
-                  </div>
-
-                  <div
-                    onClick={() => { onSelectTab('OPERATOR'); setShowPortalMenu(false); }}
-                    style={{ padding: '9px 12px', fontSize: '0.8rem', cursor: 'pointer', color: 'var(--slate-900)', fontWeight: activeTab === 'OPERATOR' ? 700 : 500, background: activeTab === 'OPERATOR' ? '#fffbeb' : 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  >
-                    <span>Centre Operator Console</span>
-                    {activeTab === 'OPERATOR' && <Check size={14} color="#b45309" />}
-                  </div>
-
-                  <div
-                    onClick={() => { onSelectTab('ADMIN'); setShowPortalMenu(false); }}
-                    style={{ padding: '9px 12px', fontSize: '0.8rem', cursor: 'pointer', color: 'var(--slate-900)', fontWeight: activeTab === 'ADMIN' ? 700 : 500, background: activeTab === 'ADMIN' ? '#eef2ff' : 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  >
-                    <span>District Admin Dashboard</span>
-                    {activeTab === 'ADMIN' && <Check size={14} color="#4338ca" />}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* 2. DEMO FARMER PROFILE DROPDOWN */}
+          {/* 1. DEMO FARMER PROFILE DROPDOWN */}
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => {
                 setShowFarmerMenu(!showFarmerMenu);
-                setShowPortalMenu(false);
                 setShowLangMenu(false);
               }}
               style={{
@@ -168,6 +95,7 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             >
               <UserIcon size={14} color="#a7f3d0" />
               <span>{activeFarmerName}</span>
+              <span style={{ fontSize: '0.65rem', background: '#047857', color: 'white', padding: '1px 5px', borderRadius: '4px', textTransform: 'uppercase' }}>Farmer</span>
               <ChevronDown size={13} color="#a7f3d0" />
             </button>
 
@@ -219,12 +147,11 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             )}
           </div>
 
-          {/* 3. LANGUAGE DROPDOWN */}
+          {/* 2. LANGUAGE DROPDOWN */}
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => {
                 setShowLangMenu(!showLangMenu);
-                setShowPortalMenu(false);
                 setShowFarmerMenu(false);
               }}
               style={{
@@ -282,7 +209,7 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             )}
           </div>
 
-          {/* 4. RESET DEMO BUTTON */}
+          {/* 3. RESET DEMO BUTTON */}
           <button
             onClick={onResetData}
             disabled={isResetting}

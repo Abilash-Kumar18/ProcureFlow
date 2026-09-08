@@ -27,10 +27,13 @@ import { FarmerLiveQueue } from './FarmerLiveQueue';
 import { FarmerTimeline } from './FarmerTimeline';
 import { FarmerNotifications } from './FarmerNotifications';
 import { FarmerBookingHistory } from './FarmerBookingHistory';
+import { FarmerPaymentStatus } from './FarmerPaymentStatus';
+import { FarmerProfile } from './FarmerProfile';
 
 interface FarmerHomeProps {
   currentUser: User;
   currentLanguage: LanguageCode;
+  onSelectLanguage?: (lang: LanguageCode) => void;
   onRefresh: () => void;
 }
 
@@ -41,10 +44,12 @@ export type FarmerView =
   | 'DISCOVERY'
   | 'LIVE_QUEUE'
   | 'TIMELINE'
+  | 'PAYMENTS'
   | 'NOTIFICATIONS'
-  | 'HISTORY';
+  | 'HISTORY'
+  | 'PROFILE';
 
-export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLanguage, onRefresh }) => {
+export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLanguage, onSelectLanguage, onRefresh }) => {
   const t = translations[currentLanguage];
   const [currentView, setCurrentView] = useState<FarmerView>('JOURNEY_HOME');
 
@@ -226,7 +231,9 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               { id: 'HISTORY', label: 'Bookings', icon: Calendar },
               { id: 'LIVE_QUEUE', label: 'Live Queue', icon: Radio, isLive: true },
               { id: 'TIMELINE', label: 'Procurement', icon: FileText },
-              { id: 'NOTIFICATIONS', label: 'Alerts', icon: Bell }
+              { id: 'PAYMENTS', label: 'Payments', icon: CreditCard },
+              { id: 'NOTIFICATIONS', label: 'Alerts', icon: Bell },
+              { id: 'PROFILE', label: 'Profile', icon: UserIcon }
             ].map(navItem => {
               const Icon = navItem.icon;
               const isActive = currentView === navItem.id;
@@ -317,6 +324,15 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           />
         )}
 
+        {currentView === 'PAYMENTS' && (
+          <FarmerPaymentStatus
+            activeBooking={activeBooking}
+            currentUser={currentUser}
+            currentLanguage={currentLanguage}
+            onViewReceipt={handleViewReceipt}
+          />
+        )}
+
         {currentView === 'NOTIFICATIONS' && (
           <FarmerNotifications
             notifications={notifications}
@@ -331,6 +347,14 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             currentLanguage={currentLanguage}
             onViewReceipt={handleViewReceipt}
             onTrackQueue={() => setCurrentView('LIVE_QUEUE')}
+          />
+        )}
+
+        {currentView === 'PROFILE' && (
+          <FarmerProfile
+            currentUser={currentUser}
+            currentLanguage={currentLanguage}
+            onSelectLanguage={onSelectLanguage || (() => {})}
           />
         )}
 
