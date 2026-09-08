@@ -94,19 +94,18 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
                   key={p.id}
                   onClick={() => onSelectPersona(p.id)}
                   style={{
-                    background: isSelected ? 'linear-gradient(135deg, #059669 0%, #047857 100%)' : 'transparent',
-                    color: isSelected ? 'white' : 'var(--slate-400)',
+                    background: isSelected ? 'var(--emerald-primary)' : 'transparent',
+                    color: isSelected ? 'white' : '#a7f3d0',
                     border: 'none',
-                    borderRadius: '10px',
-                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    padding: '4px 9px',
                     cursor: 'pointer',
-                    fontSize: '0.8rem',
+                    fontSize: '0.75rem',
                     fontWeight: isSelected ? 700 : 500,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    transition: 'all 0.2s ease',
-                    boxShadow: isSelected ? '0 4px 12px rgba(5, 150, 105, 0.4)' : 'none'
+                    gap: '4px',
+                    transition: 'all 0.15s ease'
                   }}
                 >
                   <RoleIcon size={14} />
@@ -117,32 +116,32 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             })}
           </div>
 
-          {/* Multilingual Selector Pills */}
-          <div style={{ display: 'flex', background: '#131b2e', padding: '4px', borderRadius: '12px', border: '1px solid #1e293b', gap: '2px' }}>
+          {/* Multilingual Selector */}
+          <div style={{ display: 'flex', background: 'rgba(0, 0, 0, 0.2)', padding: '3px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', gap: '2px' }}>
             <button
               onClick={() => onSelectLanguage('en')}
               style={{
-                background: currentLanguage === 'en' ? '#334155' : 'transparent',
-                color: currentLanguage === 'en' ? '#38bdf8' : 'var(--slate-400)',
+                background: currentLanguage === 'en' ? 'var(--green-primary)' : 'transparent',
+                color: currentLanguage === 'en' ? 'white' : '#a7f3d0',
                 border: 'none',
-                borderRadius: '8px',
-                padding: '5px 9px',
-                fontSize: '0.78rem',
+                borderRadius: '5px',
+                padding: '4px 8px',
+                fontSize: '0.72rem',
                 fontWeight: 700,
                 cursor: 'pointer'
               }}
             >
-              EN
+              English
             </button>
             <button
               onClick={() => onSelectLanguage('hi')}
               style={{
-                background: currentLanguage === 'hi' ? '#334155' : 'transparent',
-                color: currentLanguage === 'hi' ? '#38bdf8' : 'var(--slate-400)',
+                background: currentLanguage === 'hi' ? 'var(--green-primary)' : 'transparent',
+                color: currentLanguage === 'hi' ? 'white' : '#a7f3d0',
                 border: 'none',
-                borderRadius: '8px',
-                padding: '5px 9px',
-                fontSize: '0.78rem',
+                borderRadius: '5px',
+                padding: '4px 8px',
+                fontSize: '0.72rem',
                 fontWeight: 700,
                 cursor: 'pointer'
               }}
@@ -152,12 +151,12 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             <button
               onClick={() => onSelectLanguage('ta')}
               style={{
-                background: currentLanguage === 'ta' ? '#334155' : 'transparent',
-                color: currentLanguage === 'ta' ? '#38bdf8' : 'var(--slate-400)',
+                background: currentLanguage === 'ta' ? 'var(--green-primary)' : 'transparent',
+                color: currentLanguage === 'ta' ? 'white' : '#a7f3d0',
                 border: 'none',
-                borderRadius: '8px',
-                padding: '5px 9px',
-                fontSize: '0.78rem',
+                borderRadius: '5px',
+                padding: '4px 8px',
+                fontSize: '0.72rem',
                 fontWeight: 700,
                 cursor: 'pointer'
               }}
@@ -173,14 +172,15 @@ export const DemoHeader: React.FC<DemoHeaderProps> = ({
             title="Reset database to initial pristine state"
             className="btn"
             style={{
-              padding: '7px 12px',
-              fontSize: '0.8rem',
-              background: '#1e293b',
-              color: '#94a3b8',
-              border: '1px solid #334155'
+              padding: '5px 9px',
+              fontSize: '0.72rem',
+              background: 'rgba(0, 0, 0, 0.2)',
+              color: '#a7f3d0',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '6px'
             }}
           >
-            <RefreshCw size={14} className={isResetting ? 'pulse-active' : ''} />
+            <RefreshCw size={12} className={isResetting ? 'pulse-active' : ''} />
             <span>{isResetting ? t.demoBar.resetting : t.demoBar.resetData}</span>
           </button>
 

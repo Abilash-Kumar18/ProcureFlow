@@ -145,7 +145,7 @@ export const App: React.FC = () => {
 
   // 3. Authenticated Main Dashboard
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-main)' }}>
       {/* Top Header */}
       <DemoHeader
         currentUser={currentUser}
@@ -159,10 +159,10 @@ export const App: React.FC = () => {
         isResetting={isResetting}
       />
 
-      {/* Primary Role Navigation Floating Tabs */}
-      <div className="no-print" style={{ background: 'white', borderBottom: '1px solid var(--slate-200)', padding: '12px 0' }}>
-        <div className="app-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', background: '#f1f5f9', padding: '4px', borderRadius: '14px', gap: '4px', border: '1px solid #e2e8f0' }}>
+      {/* Primary Role Selector Bar */}
+      <div className="no-print" style={{ background: 'white', borderBottom: '1px solid var(--slate-200)', padding: '6px 0' }}>
+        <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '4px' }}>
             <button
               onClick={() => {
                 setActiveTab('FARMER');
@@ -174,17 +174,17 @@ export const App: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '9px 18px',
-                borderRadius: '10px',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '6px',
                 border: 'none',
-                background: activeTab === 'FARMER' ? 'white' : 'transparent',
-                color: activeTab === 'FARMER' ? 'var(--emerald-800)' : 'var(--slate-600)',
+                background: activeTab === 'FARMER' ? 'var(--mint-soft)' : 'transparent',
+                color: activeTab === 'FARMER' ? 'var(--green-dark)' : 'var(--slate-600)',
+                borderBottom: activeTab === 'FARMER' ? '2px solid var(--green-primary)' : '2px solid transparent',
                 fontWeight: activeTab === 'FARMER' ? 700 : 500,
-                fontSize: '0.88rem',
+                fontSize: '0.85rem',
                 cursor: 'pointer',
-                boxShadow: activeTab === 'FARMER' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.15s ease'
               }}
             >
               <span>{t.roles.FARMER}</span>
@@ -199,17 +199,17 @@ export const App: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '9px 18px',
-                borderRadius: '10px',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '6px',
                 border: 'none',
-                background: activeTab === 'OPERATOR' ? 'white' : 'transparent',
+                background: activeTab === 'OPERATOR' ? '#fffbeb' : 'transparent',
                 color: activeTab === 'OPERATOR' ? '#b45309' : 'var(--slate-600)',
+                borderBottom: activeTab === 'OPERATOR' ? '2px solid #b45309' : '2px solid transparent',
                 fontWeight: activeTab === 'OPERATOR' ? 700 : 500,
-                fontSize: '0.88rem',
+                fontSize: '0.85rem',
                 cursor: 'pointer',
-                boxShadow: activeTab === 'OPERATOR' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.15s ease'
               }}
             >
               <span>{t.roles.OPERATOR}</span>
@@ -224,31 +224,31 @@ export const App: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '9px 18px',
-                borderRadius: '10px',
+                gap: '6px',
+                padding: '6px 14px',
+                borderRadius: '6px',
                 border: 'none',
-                background: activeTab === 'ADMIN' ? 'white' : 'transparent',
+                background: activeTab === 'ADMIN' ? '#eef2ff' : 'transparent',
                 color: activeTab === 'ADMIN' ? '#4338ca' : 'var(--slate-600)',
+                borderBottom: activeTab === 'ADMIN' ? '2px solid #4338ca' : '2px solid transparent',
                 fontWeight: activeTab === 'ADMIN' ? 700 : 500,
-                fontSize: '0.88rem',
+                fontSize: '0.85rem',
                 cursor: 'pointer',
-                boxShadow: activeTab === 'ADMIN' ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.15s ease'
               }}
             >
               <span>{t.roles.DISTRICT_ADMIN}</span>
             </button>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.82rem', color: 'var(--slate-500)' }}>
+          <div style={{ fontSize: '0.78rem', color: 'var(--slate-500)', fontWeight: 600 }}>
             <span>{t.zoneTag}</span>
           </div>
         </div>
       </div>
 
       {/* Main View Area */}
-      <main style={{ flex: 1, paddingTop: '24px' }}>
+      <main style={{ flex: 1 }}>
         {currentUser && activeTab === 'FARMER' && (
           <FarmerHome
             key={`farmer-${currentUser.id}-${refreshKey}`}
@@ -277,14 +277,11 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Enterprise Footer */}
-      <footer className="no-print" style={{ background: '#090d16', color: 'var(--slate-400)', padding: '28px 0', borderTop: '1px solid #1e293b', marginTop: 'auto' }}>
-        <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px', fontSize: '0.82rem' }}>
+      {/* Digital Service Footer */}
+      <footer className="no-print" style={{ background: 'var(--slate-900)', color: 'var(--slate-400)', padding: '18px 0', borderTop: '1px solid var(--slate-800)', marginTop: 'auto' }}>
+        <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '12px', fontSize: '0.78rem' }}>
           <div>
             <strong style={{ color: 'white' }}>{t.appTitle}</strong> • {t.appSubtitle}
-            <span style={{ display: 'block', color: 'var(--slate-500)', marginTop: '3px' }}>
-              {t.footerSubtext}
-            </span>
           </div>
           <div style={{ textAlign: 'right' }}>
             <span style={{ color: '#34d399', fontWeight: 600 }}>{t.footerTagline}</span>
