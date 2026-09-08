@@ -27,10 +27,13 @@ import { FarmerLiveQueue } from './FarmerLiveQueue';
 import { FarmerTimeline } from './FarmerTimeline';
 import { FarmerNotifications } from './FarmerNotifications';
 import { FarmerBookingHistory } from './FarmerBookingHistory';
+import { FarmerPaymentStatus } from './FarmerPaymentStatus';
+import { FarmerProfile } from './FarmerProfile';
 
 interface FarmerHomeProps {
   currentUser: User;
   currentLanguage: LanguageCode;
+  onSelectLanguage?: (lang: LanguageCode) => void;
   onRefresh: () => void;
 }
 
@@ -41,10 +44,12 @@ export type FarmerView =
   | 'DISCOVERY'
   | 'LIVE_QUEUE'
   | 'TIMELINE'
+  | 'PAYMENTS'
   | 'NOTIFICATIONS'
-  | 'HISTORY';
+  | 'HISTORY'
+  | 'PROFILE';
 
-export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLanguage, onRefresh }) => {
+export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLanguage, onSelectLanguage, onRefresh }) => {
   const t = translations[currentLanguage];
   const [currentView, setCurrentView] = useState<FarmerView>('JOURNEY_HOME');
 
@@ -215,18 +220,20 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
-      {/* SINGLE CLEAN DESKTOP HORIZONTAL NAVIGATION SYSTEM */}
+      {/* INTEGRATED SINGLE HORIZONTAL FARMER NAVIGATION BAR */}
       <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid var(--border-light)', padding: '0' }}>
-        <div className="app-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
           
-          <div style={{ display: 'flex', gap: '4px' }}>
+          <div style={{ display: 'flex', gap: '2px' }}>
             {[
               { id: 'JOURNEY_HOME', label: 'Home', icon: Home },
               { id: 'DISCOVERY', label: 'Find Centre', icon: Search },
               { id: 'HISTORY', label: 'Bookings', icon: Calendar },
-              { id: 'LIVE_QUEUE', label: 'Live Queue', icon: Radio },
+              { id: 'LIVE_QUEUE', label: 'Live Queue', icon: Radio, isLive: true },
               { id: 'TIMELINE', label: 'Procurement', icon: FileText },
-              { id: 'NOTIFICATIONS', label: 'Alerts', icon: Bell }
+              { id: 'PAYMENTS', label: 'Payments', icon: CreditCard },
+              { id: 'NOTIFICATIONS', label: 'Alerts', icon: Bell },
+              { id: 'PROFILE', label: 'Profile', icon: UserIcon }
             ].map(navItem => {
               const Icon = navItem.icon;
               const isActive = currentView === navItem.id;
@@ -252,16 +259,19 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 >
                   <Icon size={16} color={isActive ? 'var(--green-primary)' : 'var(--text-muted)'} />
                   <span>{navItem.label}</span>
+                  {navItem.isLive && (
+                    <span style={{ fontSize: '0.65rem', color: 'var(--green-primary)', fontWeight: 800, marginLeft: '2px', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                      <span className="live-dot" style={{ width: '5px', height: '5px' }} />
+                      <span>Live</span>
+                    </span>
+                  )}
                 </button>
               );
             })}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-            <span className="live-indicator">
-              <div className="live-dot" />
-              <span>Live Queue Connected</span>
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600, padding: '8px 0' }}>
+            <span>Thanjavur Zone • Kharif 2026</span>
           </div>
 
         </div>
@@ -314,6 +324,15 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           />
         )}
 
+        {currentView === 'PAYMENTS' && (
+          <FarmerPaymentStatus
+            activeBooking={activeBooking}
+            currentUser={currentUser}
+            currentLanguage={currentLanguage}
+            onViewReceipt={handleViewReceipt}
+          />
+        )}
+
         {currentView === 'NOTIFICATIONS' && (
           <FarmerNotifications
             notifications={notifications}
@@ -331,7 +350,15 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           />
         )}
 
-        {/* MAIN FARMER ACTION HOME (NO DASHBOARD TILE GRIDS!) */}
+        {currentView === 'PROFILE' && (
+          <FarmerProfile
+            currentUser={currentUser}
+            currentLanguage={currentLanguage}
+            onSelectLanguage={onSelectLanguage || (() => {})}
+          />
+        )}
+
+        {/* MAIN FARMER ACTION HOME */}
         {currentView === 'JOURNEY_HOME' && (
           <div className="app-container" style={{ padding: '24px 20px 60px' }}>
             
@@ -390,7 +417,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               </div>
             ) : null}
 
-            {/* LIGHTWEIGHT HORIZONTAL QUICK ACTION ROW (NO GIANT CARDS) */}
+            {/* LIGHTWEIGHT HORIZONTAL QUICK ACTION ROW */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '28px' }}>
               <button onClick={() => handleOpenBookingModal()} className="btn btn-secondary" style={{ flex: 1, minWidth: '160px', justifyContent: 'flex-start', padding: '12px 16px' }}>
                 <Calendar size={18} color="var(--green-primary)" />
