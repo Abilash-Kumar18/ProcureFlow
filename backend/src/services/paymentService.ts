@@ -72,7 +72,7 @@ export class PaymentService {
         notifMsg
       );
 
-      const updatedPayment = db.prepare(`SELECT * FROM payment_records WHERE id = ?`).get(params.payment_id) as PaymentRecord;
+      const updatedPayment = (db.prepare(`SELECT * FROM payment_records WHERE id = ?`).get(params.payment_id) as unknown) as PaymentRecord;
 
       sseService.broadcast(`booking:${payment.booking_id}`, 'payment_updated', { payment: updatedPayment });
       sseService.broadcast('global', 'payment_status_changed', { payment: updatedPayment });

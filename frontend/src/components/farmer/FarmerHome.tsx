@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { User, LanguageCode, SlotWindow } from '../../../../shared/src/types';
-import { translations } from '../../i18n/translations';
+import {
+  translations,
+  localizeStatus,
+  localizeCentreName,
+  localizeCentreAddress,
+  localizeCommodity,
+  localizeVillage,
+  localizeBank,
+  localizeCounter,
+  localizeChannel,
+  localizeNotificationTitle,
+  localizeNotificationMessage
+} from '../../i18n/translations';
 import { playTokenCallChime } from '../../utils/audioAlert';
 import confetti from 'canvas-confetti';
 import {
@@ -206,23 +218,25 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <span className="badge badge-emerald">Verified Farmer Profile</span>
+                <span className="badge badge-emerald">{t.farmer.verifiedProfile}</span>
                 <span style={{ fontSize: '0.8rem', color: 'var(--slate-500)' }}>
-                  ID: <strong className="mono">{(currentUser as any).farmer_ref || 'FMR-TN-2026-0812'}</strong>
+                  {t.farmer.farmerRef} <strong className="mono">{(currentUser as any).farmer_ref || 'FMR-TN-2026-0812'}</strong>
                 </span>
               </div>
               <h2 style={{ fontSize: '1.6rem', color: 'var(--slate-900)' }}>{t.farmer.welcome} {currentUser.name}</h2>
               <p style={{ color: 'var(--slate-600)', fontSize: '0.85rem' }}>
-                📍 {(currentUser as any).village || 'Pillaiyarpatti South'} • 🏦 {(currentUser as any).masked_payment_ref || 'SBIN*****4821'} (State Bank of India)
+                📍 {localizeVillage((currentUser as any).village, currentLanguage) || localizeVillage('Pillaiyarpatti South', currentLanguage)} • 🏦 {(currentUser as any).masked_payment_ref || 'SBIN*****4821'} ({localizeBank((currentUser as any).bank_name || 'State Bank of India', currentLanguage)})
               </p>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{ background: '#ecfdf5', padding: '10px 16px', borderRadius: '14px', border: '1px solid #a7f3d0', textAlign: 'right' }}>
-              <span style={{ fontSize: '0.72rem', color: '#047857', fontWeight: 700, textTransform: 'uppercase' }}>Kharif 2026 Quota</span>
-              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#065f46' }}>80.0 / 100 Qtl</div>
-              <span style={{ fontSize: '0.7rem', color: '#059669' }}>Eligible for Grade A Paddy</span>
+              <span style={{ fontSize: '0.72rem', color: '#047857', fontWeight: 700, textTransform: 'uppercase' }}>{t.farmer.kharifQuota}</span>
+              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#065f46' }}>
+                {currentUser.id === 'user-ramesh' ? '80.0 / 100 Qtl' : currentUser.id === 'u-f-1' ? '75.0 / 100 Qtl' : '60.0 / 80 Qtl'}
+              </div>
+              <span style={{ fontSize: '0.7rem', color: '#059669' }}>{t.farmer.eligiblePaddy}</span>
             </div>
 
             <button onClick={handleOpenBookingModal} className="btn btn-primary" style={{ padding: '12px 22px' }}>
@@ -254,7 +268,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span className="badge" style={{ background: 'white', color: '#b45309', fontWeight: 800 }}>IMMEDIATE ACTION REQUIRED</span>
+                <span className="badge" style={{ background: 'white', color: '#b45309', fontWeight: 800 }}>{t.farmer.urgentAlert.title}</span>
                 <div className="sound-wave">
                   <div className="sound-bar" style={{ background: 'white' }} />
                   <div className="sound-bar" style={{ background: 'white' }} />
@@ -264,10 +278,10 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 </div>
               </div>
               <h3 style={{ fontSize: '1.35rem', margin: '4px 0', fontWeight: 800 }}>
-                {t.farmer.calledAlert} {activeBooking.assigned_counter_code || 'Counter 1 (Weighbridge Bay)'}!
+                {t.farmer.urgentAlert.calledTo} {localizeCounter(activeBooking.assigned_counter_code, currentLanguage) || localizeCounter('Counter 1 (Weighbridge Bay)', currentLanguage)}!
               </h3>
               <p style={{ fontSize: '0.85rem', opacity: 0.95 }}>
-                Please guide your tractor/truck into Bay 1 for weighbridge gross measurement.
+                {t.farmer.urgentAlert.instructions}
               </p>
             </div>
           </div>
@@ -277,7 +291,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             className="btn"
             style={{ background: 'white', color: '#b45309', fontWeight: 700, padding: '8px 16px', fontSize: '0.85rem' }}
           >
-            Play Chime 🔔
+            {t.farmer.urgentAlert.playChime}
           </button>
         </div>
       )}
@@ -290,16 +304,16 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <span className="badge badge-emerald" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#6ee7b7', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
-                  OFFICIAL DIGITAL PASS
+                  {t.farmer.officialDigitalPass}
                 </span>
-                <span style={{ fontSize: '0.75rem', color: '#a7f3d0' }}>DoCA APMC Network</span>
+                <span style={{ fontSize: '0.75rem', color: '#a7f3d0' }}>{t.farmer.docaNetwork}</span>
               </div>
               <h3 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'white' }}>
-                {activeBooking.centre_name}
+                {localizeCentreName(activeBooking.centre_name, currentLanguage)}
               </h3>
               <p style={{ color: '#a7f3d0', fontSize: '0.9rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <MapPin size={15} />
-                <span>{activeBooking.centre_address}</span>
+                <span>{localizeCentreAddress(activeBooking.centre_address, currentLanguage)}</span>
               </p>
             </div>
 
@@ -320,7 +334,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 {activeBooking.token_no}
               </div>
               <span className="mono" style={{ fontSize: '0.72rem', color: '#a7f3d0' }}>
-                REF: {activeBooking.booking_ref}
+                {t.farmer.bookingRef} {activeBooking.booking_ref}
               </span>
             </div>
           </div>
@@ -328,25 +342,27 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           {/* Details Row */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginTop: '24px' }}>
             <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>Procurement Date</span>
+              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>{t.farmer.procurementDate}</span>
               <div style={{ fontSize: '1.1rem', fontWeight: 800, marginTop: '2px' }}>{activeBooking.service_date}</div>
             </div>
 
             <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>Arrival Window</span>
+              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>{t.farmer.arrivalWindow}</span>
               <div style={{ fontSize: '1.1rem', fontWeight: 800, marginTop: '2px' }}>{activeBooking.slot_start_time} - {activeBooking.slot_end_time}</div>
             </div>
 
             <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>Crop / Expected Volume</span>
-              <div style={{ fontSize: '1.1rem', fontWeight: 800, marginTop: '2px' }}>{activeBooking.commodity_name} • {activeBooking.expected_qty} Qtl</div>
+              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>{t.farmer.cropExpectedVolume}</span>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, marginTop: '2px' }}>
+                {localizeCommodity(activeBooking.commodity_name, currentLanguage)} • {activeBooking.expected_qty} {t.common.quintals}
+              </div>
             </div>
 
             <div style={{ background: 'rgba(255, 255, 255, 0.06)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>Current Status</span>
+              <span style={{ fontSize: '0.75rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 600 }}>{t.farmer.currentStatus}</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                 <span className={`badge ${activeBooking.queue_state === 'CALLED' ? 'badge-amber' : 'badge-emerald'}`}>
-                  {activeBooking.queue_state}
+                  {localizeStatus(activeBooking.queue_state, currentLanguage)}
                 </span>
               </div>
             </div>
@@ -376,7 +392,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                     {activeBooking.people_ahead ?? 0}
                   </div>
                   <span style={{ fontSize: '0.65rem', color: '#a7f3d0', textTransform: 'uppercase', fontWeight: 700 }}>
-                    Ahead
+                    {t.farmer.ahead}
                   </span>
                 </div>
               </div>
@@ -384,19 +400,19 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               <div>
                 <h4 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'white' }}>
                   {activeBooking.queue_state === 'BOOKED'
-                    ? 'Arrival Pending'
+                    ? t.farmer.arrivalPending
                     : activeBooking.queue_state === 'WAITING'
-                    ? `Estimated Waiting Time: ~${activeBooking.eta_minutes ?? 20} mins`
+                    ? `${t.farmer.estWaitMinutes}${activeBooking.eta_minutes ?? 20} ${t.farmer.minutes}`
                     : activeBooking.queue_state === 'CALLED'
-                    ? 'Your Token is Called!'
+                    ? t.farmer.tokenIsCalled
                     : activeBooking.queue_state === 'IN_SERVICE'
-                    ? 'Weighing in Progress at Bay'
-                    : 'Procurement Complete'}
+                    ? t.farmer.weighingInProgress
+                    : t.farmer.procurementComplete}
                 </h4>
                 <p style={{ fontSize: '0.85rem', color: '#a7f3d0', marginTop: '2px', maxWidth: '400px' }}>
                   {activeBooking.queue_state === 'BOOKED'
-                    ? 'Gate check-in activates your virtual token and assigns your position in the digital queue.'
-                    : 'System dynamically adjusts queue order based on actual weighbridge duration.'}
+                    ? t.farmer.arrivalPendingDesc
+                    : t.farmer.dynamicQueueDesc}
                 </p>
               </div>
             </div>
@@ -421,7 +437,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                   style={{ background: 'white', color: '#064e3b', fontWeight: 800, padding: '12px 24px' }}
                 >
                   <FileText size={18} />
-                  <span>View Receipt ({activeBooking.receipt_ref})</span>
+                  <span>{t.farmer.viewReceipt} ({activeBooking.receipt_ref})</span>
                 </button>
               )}
             </div>
@@ -432,27 +448,27 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             <div className="step-track">
               <div className={`step-node ${['BOOKED', 'WAITING', 'CALLED', 'IN_SERVICE', 'COMPLETED'].includes(activeBooking.queue_state) ? 'completed' : ''}`}>
                 <div className="step-circle"><Check size={18} /></div>
-                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>1. Booked</span>
+                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>{t.farmer.stepper.booked}</span>
               </div>
 
               <div className={`step-node ${['WAITING', 'CALLED', 'IN_SERVICE', 'COMPLETED'].includes(activeBooking.queue_state) ? (activeBooking.queue_state === 'WAITING' ? 'active' : 'completed') : ''}`}>
                 <div className="step-circle">{['WAITING', 'CALLED', 'IN_SERVICE', 'COMPLETED'].includes(activeBooking.queue_state) ? <Check size={18} /> : '2'}</div>
-                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>2. Gate Check-in</span>
+                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>{t.farmer.stepper.gateCheckin}</span>
               </div>
 
               <div className={`step-node ${['CALLED', 'IN_SERVICE', 'COMPLETED'].includes(activeBooking.queue_state) ? (activeBooking.queue_state === 'CALLED' ? 'active' : 'completed') : ''}`}>
                 <div className="step-circle">{['CALLED', 'IN_SERVICE', 'COMPLETED'].includes(activeBooking.queue_state) ? <Check size={18} /> : '3'}</div>
-                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>3. Weighbridge Bay</span>
+                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>{t.farmer.stepper.weighbridge}</span>
               </div>
 
               <div className={`step-node ${['IN_SERVICE', 'COMPLETED'].includes(activeBooking.queue_state) ? (activeBooking.queue_state === 'IN_SERVICE' ? 'active' : 'completed') : ''}`}>
                 <div className="step-circle">{activeBooking.queue_state === 'COMPLETED' ? <Check size={18} /> : '4'}</div>
-                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>4. Quality Check</span>
+                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>{t.farmer.stepper.qualityCheck}</span>
               </div>
 
               <div className={`step-node ${activeBooking.queue_state === 'COMPLETED' ? 'completed' : ''}`}>
                 <div className="step-circle">{activeBooking.queue_state === 'COMPLETED' ? <Check size={18} /> : '5'}</div>
-                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>5. DBT Credit</span>
+                <span style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 700 }}>{t.farmer.stepper.dbtCredit}</span>
               </div>
             </div>
           </div>
@@ -465,7 +481,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           </div>
           <h3 style={{ fontSize: '1.4rem', color: 'var(--slate-900)', marginBottom: '6px' }}>{t.farmer.noActiveBooking}</h3>
           <p style={{ color: 'var(--slate-500)', fontSize: '0.95rem', maxWidth: '460px', margin: '0 auto 24px' }}>
-            Reserve your appointment in advance to eliminate waiting at the mandi gate.
+            {t.farmer.noActiveBookingDesc}
           </p>
           <button onClick={handleOpenBookingModal} className="btn btn-primary" style={{ padding: '12px 28px', fontSize: '1rem' }}>
             <Calendar size={20} />
@@ -481,9 +497,9 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
             <h3 style={{ fontSize: '1.2rem', color: 'var(--slate-900)', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <FileText size={20} color="var(--emerald-600)" />
-              <span>Procurement History & Receipts</span>
+              <span>{t.farmer.historyTitle}</span>
             </h3>
-            <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)' }}>{bookings.length} Records</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)' }}>{bookings.length} {t.common.records}</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -507,25 +523,25 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                       b.status === 'COMPLETED' ? 'badge-emerald' :
                       b.status === 'CONFIRMED' ? 'badge-amber' : 'badge-slate'
                     }`}>
-                      {b.queue_state || b.status}
+                      {localizeStatus(b.queue_state || b.status, currentLanguage)}
                     </span>
                   </div>
                   <p style={{ fontSize: '0.85rem', color: 'var(--slate-600)', marginTop: '3px' }}>
-                    {b.centre_name} • {b.service_date}
+                    {localizeCentreName(b.centre_name, currentLanguage)} • {b.service_date}
                   </p>
                   {b.receipt_ref && (
                     <span style={{ fontSize: '0.78rem', color: 'var(--emerald-700)', fontWeight: 700 }}>
-                      Receipt: {b.receipt_ref} • ₹{b.net_amount?.toLocaleString('en-IN')}
+                      {t.farmer.receiptModal.receiptLabel} {b.receipt_ref} • ₹{b.net_amount?.toLocaleString('en-IN')}
                     </span>
                   )}
                 </div>
 
                 {b.receipt_ref ? (
                   <button onClick={() => handleViewReceipt(b.receipt_ref)} className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
-                    Receipt 📄
+                    {t.farmer.viewReceipt} 📄
                   </button>
                 ) : (
-                  <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)' }}>Scheduled</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)' }}>{t.common.scheduled}</span>
                 )}
               </div>
             ))}
@@ -539,19 +555,21 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               <Bell size={20} color="var(--amber-500)" />
               <span>{t.farmer.notifications}</span>
             </h3>
-            <span className="badge badge-emerald" style={{ fontSize: '0.65rem' }}>SMS & PUSH LIVE</span>
+            <span className="badge badge-emerald" style={{ fontSize: '0.65rem' }}>{t.farmer.notificationsLive}</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {notifications.map((n) => (
               <div key={n.id} style={{ background: 'var(--slate-50)', borderRadius: '14px', padding: '14px', borderLeft: '4px solid var(--emerald-500)', border: '1px solid var(--slate-200)', borderLeftWidth: '4px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                  <strong style={{ fontSize: '0.88rem', color: 'var(--slate-900)' }}>{n.title}</strong>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--slate-400)' }}>{n.channel}</span>
+                  <strong style={{ fontSize: '0.88rem', color: 'var(--slate-900)' }}>{localizeNotificationTitle(n.title, currentLanguage)}</strong>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--slate-400)' }}>{localizeChannel(n.channel, currentLanguage)}</span>
                 </div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--slate-600)', lineHeight: 1.45 }}>{n.message}</p>
+                <p style={{ fontSize: '0.82rem', color: 'var(--slate-600)', lineHeight: 1.45 }}>
+                  {localizeNotificationMessage(n.message, currentLanguage)}
+                </p>
                 <span style={{ fontSize: '0.68rem', color: 'var(--slate-400)', marginTop: '4px', display: 'block' }}>
-                  Delivered to {(currentUser as any).mobile || '9876543210'}
+                  {t.farmer.deliveredTo} {(currentUser as any).mobile || '9876543210'}
                 </span>
               </div>
             ))}
@@ -565,8 +583,8 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
           <div className="modern-card" style={{ background: 'white', maxWidth: '680px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '32px', borderRadius: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid var(--slate-200)', paddingBottom: '14px' }}>
               <div>
-                <h3 style={{ fontSize: '1.4rem', color: 'var(--slate-900)' }}>{t.farmer.bookNewSlot}</h3>
-                <p style={{ fontSize: '0.82rem', color: 'var(--slate-500)' }}>Department of Consumer Affairs (DoCA) Procurement Booking</p>
+                <h3 style={{ fontSize: '1.4rem', color: 'var(--slate-900)' }}>{t.farmer.bookingModal.title}</h3>
+                <p style={{ fontSize: '0.82rem', color: 'var(--slate-500)' }}>{t.farmer.bookingModal.subtitle}</p>
               </div>
               <button onClick={() => setShowBookingModal(false)} style={{ background: 'none', border: 'none', fontSize: '1.8rem', cursor: 'pointer', color: 'var(--slate-400)' }}>&times;</button>
             </div>
@@ -581,7 +599,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 {alternatives.length > 0 && (
                   <div>
                     <p style={{ fontSize: '0.85rem', color: '#991b1b', marginBottom: '10px' }}>
-                      💡 <strong>Recommended available alternatives</strong> with zero gate wait:
+                      {t.farmer.bookingModal.recommendedAlternatives}
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       {alternatives.map((alt) => (
@@ -595,7 +613,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                           style={{ justifyContent: 'space-between', padding: '10px 14px', fontSize: '0.85rem', borderColor: '#fca5a5' }}
                         >
                           <span>{alt.centre_name} ({alt.service_date})</span>
-                          <strong>{alt.start_time} - {alt.end_time} • Select & Reserve</strong>
+                          <strong>{alt.start_time} - {alt.end_time} • {t.farmer.bookingModal.selectAndReserve}</strong>
                         </button>
                       ))}
                     </div>
@@ -607,7 +625,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {/* Step 1: Select Centre */}
             <div style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '10px', color: 'var(--slate-800)' }}>
-                1. Select Direct Purchase Centre (Thanjavur Zone):
+                {t.farmer.bookingModal.step1}
               </label>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
                 {centres.map((c) => (
@@ -624,12 +642,12 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '0.95rem', color: 'var(--slate-900)' }}>{c.name}</strong>
+                      <strong style={{ fontSize: '0.95rem', color: 'var(--slate-900)' }}>{localizeCentreName(c.name, currentLanguage)}</strong>
                       <span className={`badge ${c.is_congested ? 'badge-amber' : 'badge-emerald'}`}>
-                        {c.is_congested ? 'Heavy Traffic' : 'Optimal'}
+                        {c.is_congested ? t.common.heavyTraffic : t.common.optimal}
                       </span>
                     </div>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--slate-500)', marginTop: '4px' }}>{c.address}</p>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--slate-500)', marginTop: '4px' }}>{localizeCentreAddress(c.address, currentLanguage)}</p>
                   </div>
                 ))}
               </div>
@@ -639,7 +657,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {slotWindows.length > 0 && (
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '10px', color: 'var(--slate-800)' }}>
-                  2. Select Arrival Time Window:
+                  {t.farmer.bookingModal.step2}
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
                   {slotWindows.map((slot) => {
@@ -666,7 +684,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                           {slot.start_time} - {slot.end_time}
                         </strong>
                         <span style={{ fontSize: '0.72rem', color: isFull ? 'var(--red-600)' : '#059669', fontWeight: 600 }}>
-                          {isFull ? 'CAPACITY FULL' : `${slot.booked_farmer_count}/${slot.capacity_farmer_count} slots`}
+                          {isFull ? t.farmer.bookingModal.capacityFull : `${slot.booked_farmer_count}/${slot.capacity_farmer_count} ${t.farmer.bookingModal.slots}`}
                         </span>
                       </button>
                     );
@@ -678,7 +696,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {/* Step 3: Quantity */}
             <div style={{ marginBottom: '26px' }}>
               <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 700, marginBottom: '8px', color: 'var(--slate-800)' }}>
-                3. Estimated Produce Load (Quintals):
+                {t.farmer.bookingModal.step3}
               </label>
               <input
                 type="number"
@@ -697,14 +715,14 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 }}
               />
               <span style={{ fontSize: '0.78rem', color: 'var(--slate-500)', marginTop: '6px', display: 'block' }}>
-                Commodity: Paddy (Grade A) • MSP: ₹2,320/Quintal • Guaranteed Direct Benefit Transfer within 48h
+                {t.farmer.bookingModal.commodityInfo}
               </span>
             </div>
 
             {/* Actions */}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
               <button onClick={() => setShowBookingModal(false)} className="btn btn-secondary">
-                Cancel
+                {t.common.cancel}
               </button>
               <button
                 onClick={handleSubmitBooking}
@@ -712,7 +730,7 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
                 className="btn btn-primary"
                 style={{ padding: '12px 28px', fontWeight: 700 }}
               >
-                {isSubmittingBooking ? 'Securing Slot...' : 'Confirm & Generate Virtual Token'}
+                {isSubmittingBooking ? t.farmer.bookingModal.securingSlot : t.farmer.bookingModal.confirmButton}
               </button>
             </div>
           </div>
@@ -728,60 +746,60 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <span style={{ fontSize: '1.4rem' }}>🇮🇳</span>
                 <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--emerald-800)', letterSpacing: '0.05em' }}>
-                  GOVERNMENT OF TAMIL NADU • DEPARTMENT OF FOOD & CIVIL SUPPLIES
+                  {t.farmer.receiptModal.govHeader}
                 </span>
               </div>
-              <h2 style={{ fontSize: '1.5rem', color: 'var(--slate-900)' }}>Digital Procurement Weighbridge Receipt</h2>
+              <h2 style={{ fontSize: '1.5rem', color: 'var(--slate-900)' }}>{t.farmer.receiptModal.title}</h2>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '6px' }}>
                 <span className="mono" style={{ fontSize: '0.85rem', color: 'var(--slate-600)', background: 'var(--slate-100)', padding: '2px 8px', borderRadius: '6px' }}>
-                  RECEIPT: <strong>{selectedReceipt.receipt_ref}</strong>
+                  {t.farmer.receiptModal.receiptLabel} <strong>{selectedReceipt.receipt_ref}</strong>
                 </span>
                 <span className="mono" style={{ fontSize: '0.85rem', color: 'var(--emerald-700)', background: '#ecfdf5', padding: '2px 8px', borderRadius: '6px' }}>
-                  TOKEN: <strong>{selectedReceipt.token_no}</strong>
+                  {t.farmer.receiptModal.tokenLabel} <strong>{selectedReceipt.token_no}</strong>
                 </span>
               </div>
             </div>
 
             {/* Farmer & Centre Meta Details */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', fontSize: '0.85rem', marginBottom: '20px' }}>
-              <div><strong>Farmer Name:</strong> {selectedReceipt.farmer_name}</div>
-              <div><strong>Procurement Centre:</strong> {selectedReceipt.centre_name}</div>
-              <div><strong>Commodity Variety:</strong> {selectedReceipt.commodity_name}</div>
-              <div><strong>Recorded Timestamp:</strong> {selectedReceipt.recorded_at}</div>
-              <div><strong>Aadhaar (Masked):</strong> {selectedReceipt.masked_aadhaar}</div>
-              <div><strong>Bank DBT Account:</strong> {selectedReceipt.masked_payment_ref}</div>
+              <div><strong>{t.farmer.receiptModal.farmerName}</strong> {selectedReceipt.farmer_name}</div>
+              <div><strong>{t.farmer.receiptModal.centreName}</strong> {localizeCentreName(selectedReceipt.centre_name, currentLanguage)}</div>
+              <div><strong>{t.farmer.receiptModal.commodityVariety}</strong> {localizeCommodity(selectedReceipt.commodity_name, currentLanguage)}</div>
+              <div><strong>{t.farmer.receiptModal.timestamp}</strong> {selectedReceipt.recorded_at}</div>
+              <div><strong>{t.farmer.receiptModal.aadhaar}</strong> {selectedReceipt.masked_aadhaar}</div>
+              <div><strong>{t.farmer.receiptModal.bankDbt}</strong> {selectedReceipt.masked_payment_ref}</div>
             </div>
 
             {/* Weighbridge Calculations Breakdown Box */}
             <div style={{ background: '#f8fafc', padding: '18px', borderRadius: '16px', border: '1px solid var(--slate-200)', marginBottom: '20px', fontSize: '0.9rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                <span>Gross Weight (Loaded):</span>
-                <strong className="mono">{selectedReceipt.gross_weight_quintals} Qtl</strong>
+                <span>{t.farmer.receiptModal.grossWeight}</span>
+                <strong className="mono">{selectedReceipt.gross_weight_quintals} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                <span>Tare Weight (Vehicle / Sacks):</span>
-                <strong className="mono" style={{ color: 'var(--slate-500)' }}>- {selectedReceipt.tare_weight_quintals} Qtl</strong>
+                <span>{t.farmer.receiptModal.tareWeight}</span>
+                <strong className="mono" style={{ color: 'var(--slate-500)' }}>- {selectedReceipt.tare_weight_quintals} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                <span>Moisture Reading:</span>
-                <span>{selectedReceipt.moisture_percentage}% (Allowable standard: 14.0%)</span>
+                <span>{t.farmer.receiptModal.moistureReading}</span>
+                <span>{selectedReceipt.moisture_percentage}% {t.farmer.receiptModal.moistureStandard}</span>
               </div>
               {selectedReceipt.moisture_deduction_quintals > 0 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', color: 'var(--red-600)' }}>
-                  <span>Excess Moisture Deduction:</span>
-                  <strong>- {selectedReceipt.moisture_deduction_quintals} Qtl</strong>
+                  <span>{t.farmer.receiptModal.excessMoistureDed}</span>
+                  <strong>- {selectedReceipt.moisture_deduction_quintals} {t.common.quintals}</strong>
                 </div>
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderTop: '1px solid var(--slate-200)', marginTop: '6px', paddingTop: '6px' }}>
-                <span>Net Accepted Quantity:</span>
-                <strong className="mono" style={{ color: 'var(--emerald-700)', fontSize: '1.05rem' }}>{selectedReceipt.final_payable_quantity} Qtl</strong>
+                <span>{t.farmer.receiptModal.netQuantity}</span>
+                <strong className="mono" style={{ color: 'var(--emerald-700)', fontSize: '1.05rem' }}>{selectedReceipt.final_payable_quantity} {t.common.quintals}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                <span>MSP Government Rate:</span>
-                <span className="mono">₹{selectedReceipt.rate_per_quintal} / Quintal</span>
+                <span>{t.farmer.receiptModal.mspRate}</span>
+                <span className="mono">₹{selectedReceipt.rate_per_quintal} / {t.common.quintals}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '2px solid var(--slate-300)', marginTop: '8px', paddingTop: '8px', fontSize: '1.25rem', color: 'var(--emerald-800)' }}>
-                <strong>Net Payable to Farmer:</strong>
+                <strong>{t.farmer.receiptModal.netPayable}</strong>
                 <strong className="mono">₹{selectedReceipt.net_amount?.toLocaleString('en-IN')}</strong>
               </div>
             </div>
@@ -789,22 +807,22 @@ export const FarmerHome: React.FC<FarmerHomeProps> = ({ currentUser, currentLang
             {/* Direct Benefit Transfer (DBT) Status */}
             <div style={{ background: '#ecfdf5', padding: '14px 18px', borderRadius: '14px', border: '1px solid #86efac', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
               <div>
-                <span style={{ fontSize: '0.75rem', color: '#166534', fontWeight: 800 }}>PFMS DIRECT BENEFIT TRANSFER STATUS</span>
+                <span style={{ fontSize: '0.75rem', color: '#166534', fontWeight: 800 }}>{t.farmer.receiptModal.dbtStatusTitle}</span>
                 <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#15803d', marginTop: '2px' }}>
-                  {selectedReceipt.payment_status || 'INITIATED'}
+                  {localizeStatus(selectedReceipt.payment_status, currentLanguage) || 'INITIATED'}
                 </div>
                 <span className="mono" style={{ fontSize: '0.72rem', color: '#166534' }}>Ref: {selectedReceipt.payment_ref_masked || 'DBT-PFMS-TN-98124'}</span>
               </div>
-              <span className="badge badge-emerald">AUTHENTICATED</span>
+              <span className="badge badge-emerald">{t.farmer.receiptModal.authenticated}</span>
             </div>
 
             {/* Printable Controls */}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }} className="no-print">
               <button onClick={() => window.print()} className="btn btn-secondary">
-                Print Official Slip 🖨️
+                {t.common.print}
               </button>
               <button onClick={() => setSelectedReceipt(null)} className="btn btn-primary">
-                Done
+                {t.common.done}
               </button>
             </div>
           </div>

@@ -76,7 +76,7 @@ export class QueueService {
         `Check-in verified! Token: ${booking.token_no}. Farmers ahead: ${peopleAhead}. Please be near the weighing bay.`
       );
 
-      const updatedEntry = db.prepare(`SELECT * FROM queue_entries WHERE id = ?`).get(queueEntry.id) as QueueEntry;
+      const updatedEntry = (db.prepare(`SELECT * FROM queue_entries WHERE id = ?`).get(queueEntry.id) as unknown) as QueueEntry;
 
       // Broadcast to both centre operator and farmer's private stream
       sseService.broadcast(`centre:${booking.centre_day_id}`, 'queue_updated', { queue_entry: updatedEntry });
@@ -190,7 +190,7 @@ export class QueueService {
         WHERE id = ?
       `).run(queueEntryId);
 
-      const entry = db.prepare(`SELECT * FROM queue_entries WHERE id = ?`).get(queueEntryId) as QueueEntry;
+      const entry = (db.prepare(`SELECT * FROM queue_entries WHERE id = ?`).get(queueEntryId) as unknown) as QueueEntry;
 
       sseService.broadcast(`centre:${entry.centre_day_id}`, 'service_started', { queueEntryId });
       sseService.broadcast(`booking:${entry.booking_id}`, 'service_started', { queueEntryId });

@@ -7,7 +7,7 @@ export const authRouter = Router();
 authRouter.get('/personas', (req, res) => {
   const users = db.prepare(`
     SELECT u.*,
-           fp.id as farmer_profile_id, fp.farmer_ref, fp.village, fp.preferred_language, fp.masked_payment_ref,
+           fp.id as farmer_profile_id, fp.farmer_ref, fp.village, fp.preferred_language, fp.masked_payment_ref, fp.bank_name,
            c.name as centre_name
     FROM users u
     LEFT JOIN farmer_profiles fp ON u.id = fp.user_id
@@ -29,7 +29,7 @@ authRouter.post('/login', (req, res) => {
   const { user_id } = req.body;
   const user = db.prepare(`
     SELECT u.*,
-           fp.id as farmer_profile_id, fp.farmer_ref, fp.village, fp.preferred_language, fp.masked_payment_ref,
+           fp.id as farmer_profile_id, fp.farmer_ref, fp.village, fp.preferred_language, fp.masked_payment_ref, fp.bank_name,
            c.name as centre_name
     FROM users u
     LEFT JOIN farmer_profiles fp ON u.id = fp.user_id

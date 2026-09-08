@@ -4,13 +4,16 @@ import { DemoHeader } from './components/common/DemoHeader';
 import { FarmerHome } from './components/farmer/FarmerHome';
 import { OperatorConsole } from './components/operator/OperatorConsole';
 import { AdminDashboard } from './components/admin/AdminDashboard';
+import { SplashScreen } from './components/splash/SplashScreen';
+import { AuthPage } from './components/auth/AuthPage';
 import { translations } from './i18n/translations';
-import { Users, Building2, Shield, Radio, Volume2, Award, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const App: React.FC = () => {
   const [personas, setPersonas] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isSplashing, setIsSplashing] = useState<boolean>(true);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en');
   const [activeTab, setActiveTab] = useState<'FARMER' | 'OPERATOR' | 'ADMIN'>('FARMER');
   const [isLiveConnected, setIsLiveConnected] = useState(false);
@@ -25,9 +28,6 @@ export const App: React.FC = () => {
         const data = await res.json();
         if (data.data && data.data.length > 0) {
           setPersonas(data.data);
-          const ramesh = data.data.find((u: User) => u.name.includes('Ramesh')) || data.data[0];
-          setCurrentUser(ramesh);
-          setActiveTab(ramesh.role === 'DISTRICT_ADMIN' ? 'ADMIN' : ramesh.role as any);
         }
       } catch (err) {
         console.error('Failed to load personas:', err);
@@ -74,6 +74,28 @@ export const App: React.FC = () => {
     };
   }, []);
 
+  // Handle successful login from AuthPage
+  const handleLoginSuccess = (user: User) => {
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    setActiveTab(user.role === 'DISTRICT_ADMIN' ? 'ADMIN' : user.role as any);
+    if (user.preferred_language && ['en', 'hi', 'ta'].includes(user.preferred_language)) {
+      setCurrentLanguage(user.preferred_language as LanguageCode);
+    }
+    setRefreshKey(prev => prev + 1);
+  };
+
+  // Handle Logout to return to Auth Portal
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setIsAuthenticated(false);
+  };
+
+  // Replay splash screen
+  const handleReplaySplash = () => {
+    setIsSplashing(true);
+  };
+
   // Switch persona handler
   const handleSelectPersona = (userId: string) => {
     const selected = personas.find(p => p.id === userId);
@@ -103,6 +125,25 @@ export const App: React.FC = () => {
 
   const t = translations[currentLanguage];
 
+  // 1. Initial Animated Splash Screen
+  if (isSplashing) {
+    return <SplashScreen onComplete={() => setIsSplashing(false)} />;
+  }
+
+  // 2. Authentication Page (when not logged in)
+  if (!isAuthenticated || !currentUser) {
+    return (
+      <AuthPage
+        personas={personas}
+        onLoginSuccess={handleLoginSuccess}
+        currentLanguage={currentLanguage}
+        onSelectLanguage={setCurrentLanguage}
+        onReplaySplash={handleReplaySplash}
+      />
+    );
+  }
+
+  // 3. Authenticated Main Dashboard
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Top Header */}
@@ -113,6 +154,7 @@ export const App: React.FC = () => {
         currentLanguage={currentLanguage}
         onSelectLanguage={setCurrentLanguage}
         onResetData={handleResetData}
+        onLogout={handleLogout}
         isLiveConnected={isLiveConnected}
         isResetting={isResetting}
       />
@@ -124,8 +166,10 @@ export const App: React.FC = () => {
             <button
               onClick={() => {
                 setActiveTab('FARMER');
-                const farmer = personas.find(p => p.role === 'FARMER');
-                if (farmer) setCurrentUser(farmer);
+                if (currentUser?.role !== 'FARMER') {
+                  const farmer = personas.find(p => p.role === 'FARMER');
+                  if (farmer) setCurrentUser(farmer);
+                }
               }}
               style={{
                 display: 'flex',
@@ -143,7 +187,6 @@ export const App: React.FC = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              <span>🌾</span>
               <span>{t.roles.FARMER}</span>
             </button>
 
@@ -169,7 +212,6 @@ export const App: React.FC = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              <span>🏢</span>
               <span>{t.roles.OPERATOR}</span>
             </button>
 
@@ -195,13 +237,12 @@ export const App: React.FC = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              <span>🏛️</span>
               <span>{t.roles.DISTRICT_ADMIN}</span>
             </button>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.82rem', color: 'var(--slate-500)' }}>
-            <span>Thanjavur Agriculture Zone • Kharif KMS 2026</span>
+            <span>{t.zoneTag}</span>
           </div>
         </div>
       </div>
@@ -240,17 +281,18 @@ export const App: React.FC = () => {
       <footer className="no-print" style={{ background: '#090d16', color: 'var(--slate-400)', padding: '28px 0', borderTop: '1px solid #1e293b', marginTop: 'auto' }}>
         <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px', fontSize: '0.82rem' }}>
           <div>
-            <strong style={{ color: 'white' }}>ProcureFlow</strong> • Smart Procurement Centre Queue & Status Platform
+            <strong style={{ color: 'white' }}>{t.appTitle}</strong> • {t.appSubtitle}
             <span style={{ display: 'block', color: 'var(--slate-500)', marginTop: '3px' }}>
-              Built for Smart India Hackathon 2026 • Ministry of Consumer Affairs, Food & Public Distribution
+              {t.footerSubtext}
             </span>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <span style={{ color: '#34d399', fontWeight: 600 }}>Zero Gate Queues • 100% Transparent DBT Payments</span>
+            <span style={{ color: '#34d399', fontWeight: 600 }}>{t.footerTagline}</span>
           </div>
         </div>
       </footer>
     </div>
   );
 };
+
 export default App;
