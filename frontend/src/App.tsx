@@ -106,6 +106,20 @@ export const App: React.FC = () => {
     }
   };
 
+  const handleSelectTab = (tab: 'FARMER' | 'OPERATOR' | 'ADMIN') => {
+    setActiveTab(tab);
+    if (tab === 'FARMER') {
+      const farmer = personas.find(p => p.role === 'FARMER');
+      if (farmer) setCurrentUser(farmer);
+    } else if (tab === 'OPERATOR') {
+      const op = personas.find(p => p.role === 'OPERATOR');
+      if (op) setCurrentUser(op);
+    } else if (tab === 'ADMIN') {
+      const admin = personas.find(p => p.role === 'DISTRICT_ADMIN');
+      if (admin) setCurrentUser(admin);
+    }
+  };
+
   // Reset database
   const handleResetData = async () => {
     if (!confirm('Reset ProcureFlow database to initial demo state?')) return;
@@ -146,7 +160,7 @@ export const App: React.FC = () => {
   // 3. Authenticated Main Dashboard
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-main)' }}>
-      {/* Top Header */}
+      {/* Top Application Header */}
       <DemoHeader
         currentUser={currentUser}
         personas={personas}
@@ -157,95 +171,9 @@ export const App: React.FC = () => {
         onLogout={handleLogout}
         isLiveConnected={isLiveConnected}
         isResetting={isResetting}
+        activeTab={activeTab}
+        onSelectTab={handleSelectTab}
       />
-
-      {/* Primary Role Selector Bar */}
-      <div className="no-print" style={{ background: 'white', borderBottom: '1px solid var(--slate-200)', padding: '6px 0' }}>
-        <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
-          <div style={{ display: 'flex', gap: '4px' }}>
-            <button
-              onClick={() => {
-                setActiveTab('FARMER');
-                if (currentUser?.role !== 'FARMER') {
-                  const farmer = personas.find(p => p.role === 'FARMER');
-                  if (farmer) setCurrentUser(farmer);
-                }
-              }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                borderRadius: '6px',
-                border: 'none',
-                background: activeTab === 'FARMER' ? 'var(--mint-soft)' : 'transparent',
-                color: activeTab === 'FARMER' ? 'var(--green-dark)' : 'var(--slate-600)',
-                borderBottom: activeTab === 'FARMER' ? '2px solid var(--green-primary)' : '2px solid transparent',
-                fontWeight: activeTab === 'FARMER' ? 700 : 500,
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <span>{t.roles.FARMER}</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveTab('OPERATOR');
-                const op = personas.find(p => p.role === 'OPERATOR');
-                if (op) setCurrentUser(op);
-              }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                borderRadius: '6px',
-                border: 'none',
-                background: activeTab === 'OPERATOR' ? '#fffbeb' : 'transparent',
-                color: activeTab === 'OPERATOR' ? '#b45309' : 'var(--slate-600)',
-                borderBottom: activeTab === 'OPERATOR' ? '2px solid #b45309' : '2px solid transparent',
-                fontWeight: activeTab === 'OPERATOR' ? 700 : 500,
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <span>{t.roles.OPERATOR}</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveTab('ADMIN');
-                const admin = personas.find(p => p.role === 'DISTRICT_ADMIN');
-                if (admin) setCurrentUser(admin);
-              }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                borderRadius: '6px',
-                border: 'none',
-                background: activeTab === 'ADMIN' ? '#eef2ff' : 'transparent',
-                color: activeTab === 'ADMIN' ? '#4338ca' : 'var(--slate-600)',
-                borderBottom: activeTab === 'ADMIN' ? '2px solid #4338ca' : '2px solid transparent',
-                fontWeight: activeTab === 'ADMIN' ? 700 : 500,
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <span>{t.roles.DISTRICT_ADMIN}</span>
-            </button>
-          </div>
-
-          <div style={{ fontSize: '0.78rem', color: 'var(--slate-500)', fontWeight: 600 }}>
-            <span>{t.zoneTag}</span>
-          </div>
-        </div>
-      </div>
 
       {/* Main View Area */}
       <main style={{ flex: 1 }}>
@@ -277,7 +205,7 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Digital Service Footer */}
+      {/* Application Footer */}
       <footer className="no-print" style={{ background: 'var(--slate-900)', color: 'var(--slate-400)', padding: '18px 0', borderTop: '1px solid var(--slate-800)', marginTop: 'auto' }}>
         <div className="app-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '12px', fontSize: '0.78rem' }}>
           <div>
