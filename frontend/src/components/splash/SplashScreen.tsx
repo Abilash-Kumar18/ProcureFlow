@@ -19,8 +19,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   ];
 
   useEffect(() => {
-    const duration = 2400; // 2.4 seconds
-    const intervalTime = 40;
+    const duration = 750; // Snappy 0.75s loading time
+    const intervalTime = 20;
     const step = 100 / (duration / intervalTime);
 
     const timer = setInterval(() => {
@@ -30,8 +30,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           clearInterval(timer);
           setTimeout(() => {
             setIsFadingOut(true);
-            setTimeout(onComplete, 400);
-          }, 300);
+            setTimeout(onComplete, 200);
+          }, 100);
           return 100;
         }
         return next;
@@ -40,7 +40,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
     const statusTimer = setInterval(() => {
       setStatusIndex((prev) => (prev + 1) % statusMessages.length);
-    }, 600);
+    }, 250);
 
     return () => {
       clearInterval(timer);
@@ -50,7 +50,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
 
   const handleSkip = () => {
     setIsFadingOut(true);
-    setTimeout(onComplete, 300);
+    setTimeout(onComplete, 150);
   };
 
   return (
